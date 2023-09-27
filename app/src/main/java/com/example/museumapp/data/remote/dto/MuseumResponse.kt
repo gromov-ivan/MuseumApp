@@ -3,6 +3,21 @@ package com.example.museumapp.data.remote.dto
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
+
+@Serializable
+data class MuseumItem(
+    val title: String,
+    val year: String,
+    val image: String
+)
+@Serializable
+data class PostResponse(
+    val body: String,
+    val title: String,
+    val id: Int,
+    val userId: Int
+)
+
 @Serializable
 data class MuseumResponse(
     val resultCount: Int,

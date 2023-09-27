@@ -2,12 +2,15 @@ package com.example.museumapp.data.remote
 
 object HttpRoutes {
 
-    private const val BASE_URL = "https://api.finna.fi/v1"
-    const val SEARCH_ENDPOINT = "$BASE_URL/search"
+    private const val BASE_URL = "https://users.metropolia.fi/~ainaral"
+    const val RECORD_ENDPOINT = "$BASE_URL/records.json"
+    const val MUSEUM_ENDPOINT = "$BASE_URL/museum.json"
 
-    fun getSearchUrl(): String {
-        return "$SEARCH_ENDPOINT"
-    }
+    private const val BASE_URL_JSON = "https://jsonplaceholder.typicode.com"
+    const val POSTS = "$BASE_URL_JSON/posts"
+
+    private const val BASE_URL_FINNA = "https://api.finna.fi/v1"
+    const val SEARCH_ENDPOINT = "$BASE_URL_FINNA/search"
 
     fun getRecordsUrl(): String {
         return "$SEARCH_ENDPOINT" +
