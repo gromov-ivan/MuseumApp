@@ -1,6 +1,7 @@
 package com.example.museumapp
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Size
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +37,7 @@ import androidx.compose.runtime.*
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.*
+import android.net.Uri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -131,6 +134,14 @@ fun QRCodeView() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp)
+                                .selectable(
+                                    selected = true,
+                                    onClick = {
+                                        val uri = Uri.parse(code) // Replace with the actual URL
+                                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                                        context.startActivity(intent)
+                                    }
+                                )
                         )
                     }
                 }
