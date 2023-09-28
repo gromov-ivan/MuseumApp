@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            //val museumResponse = MuseumService.
             val museum = produceState<List<MuseumItem>>(
                 //val museum = produceState<List<MuseumResponse>>(
                 //val postsData = produceState<List<PostResponse>>(
@@ -77,7 +78,7 @@ class MainActivity : ComponentActivity() {
                                     // You can configure image loading options here if needed
                                     rememberAsyncImagePainter(
                                         ImageRequest.Builder(LocalContext.current)
-                                            .data(data = it.image).apply(block = fun ImageRequest.Builder.() {
+                                            .data(data = it.images).apply(block = fun ImageRequest.Builder.() {
                                                 // You can configure image loading options here if needed
                                             }).build()
                                     )

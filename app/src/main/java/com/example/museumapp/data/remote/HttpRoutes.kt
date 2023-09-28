@@ -4,7 +4,7 @@ object HttpRoutes {
 
     private const val BASE_URL = "https://users.metropolia.fi/~ainaral"
     const val RECORD_ENDPOINT = "$BASE_URL/records.json"
-    const val MUSEUM_ENDPOINT = "$BASE_URL/museum.json"
+    const val MUSEUM_ENDPOINT = "$BASE_URL/TuusulaMuseum.json"
 
     private const val BASE_URL_JSON = "https://jsonplaceholder.typicode.com"
     const val POSTS = "$BASE_URL_JSON/posts"

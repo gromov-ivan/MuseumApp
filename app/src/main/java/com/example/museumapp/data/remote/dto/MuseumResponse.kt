@@ -6,9 +6,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MuseumItem(
+    val id: String,
+    val imageCopyright: String,
+    val images: String,
+    val nonPresenterAuthorsName: String,
+    val role: String,
+    val subjects: List<List<String>>,
     val title: String,
-    val year: String,
-    val image: String
+    val year: String
 )
 @Serializable
 data class PostResponse(
