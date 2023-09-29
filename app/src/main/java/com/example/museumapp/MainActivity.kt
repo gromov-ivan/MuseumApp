@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                 initialValue = emptyList(),
                 producer = {
                     try {
-                        value = service.getMuseum()
+                        value = service.getTuusulaDrawings()
 
                     } catch (e: Exception) {
                         // Handle errors here, e.g., show an error message

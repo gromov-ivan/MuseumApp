@@ -2,9 +2,23 @@ package com.example.museumapp.data.remote
 
 object HttpRoutes {
 
-    private const val BASE_URL = "https://users.metropolia.fi/~ainaral"
-    const val RECORD_ENDPOINT = "$BASE_URL/records.json"
-    const val MUSEUM_ENDPOINT = "$BASE_URL/TuusulaMuseum.json"
+    private const val BASE_URL_TUUSULA = "https://users.metropolia.fi/~ainaral/json/TuusulaMuseum"
+    private const val BASE_URL_PHOTOGRAPHY = "https://users.metropolia.fi/~ainaral/json/PhotographicArtMuseum"
+    private const val BASE_URL_ATENEUM = "https://users.metropolia.fi/~ainaral"
+
+    const val DRAWINGS_ENDPOINT = "$BASE_URL_TUUSULA/drawings.json"
+    const val PICTURES_ENDPOINT = "$BASE_URL_TUUSULA/pictures.json"
+
+    const val AGRICULTURE_ENDPOINT = "$BASE_URL_PHOTOGRAPHY/agriculture.json"
+    const val CITIES_ENDPOINT = "$BASE_URL_PHOTOGRAPHY/cities.json"
+
+    const val GRAPHICS_ENDPOINT = "$BASE_URL_ATENEUM/graphics.json"
+    const val SCULPTURE_ENDPOINT = "$BASE_URL_ATENEUM/json/AteneumArtMuseum/sculpture.json"
+
+    //const val RECORD_ENDPOINT = "$BASE_URL/records.json"
+    //const val MUSEUM_ENDPOINT = "$BASE_URL/TuusulaMuseum.json"
+
+
 
     private const val BASE_URL_JSON = "https://jsonplaceholder.typicode.com"
     const val POSTS = "$BASE_URL_JSON/posts"
