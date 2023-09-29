@@ -114,12 +114,5 @@ dependencies {
     implementation("com.google.zxing:core:3.5.2")
 
     // for material3 ModalBottomSheet
-    implementation("androidx.compose.material3:material3:1.0.0-alpha07")
-    implementation("com.google.android.material:compose-material3:1.0.0-alpha06")
-    implementation("androidx.compose.material3:material3-icons-extended:1.0.0-alpha07")
-    implementation("androidx.compose.foundation:foundation-layout:1.0.5")
     implementation("androidx.compose.material3:material3:1.1.2")
-    implementation("androidx.compose.material3:material3-window-size-class:1.1.2")
-
-
 }
