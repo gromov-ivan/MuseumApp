@@ -48,11 +48,11 @@ class MainActivity : ComponentActivity() {
 
                 // Observe changes in museumData
                 LaunchedEffect(viewModel) {
-                    viewModel.fetchMuseumData()
+                    viewModel.fetchTuusulaPictures()
                 }
             }
         }
         // Fetch museum data when the activity is created
-        viewModel.fetchMuseumData()
+        viewModel.fetchTuusulaPictures()
     }
 }
