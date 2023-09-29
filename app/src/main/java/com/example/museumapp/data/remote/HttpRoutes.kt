@@ -2,7 +2,7 @@ package com.example.museumapp.data.remote
 
 object HttpRoutes {
 
-    private const val BASE_URL = "https://users.metropolia.fi/~ainaral"
+    private const val BASE_URL = "https://users.metropolia.fi/~ainaral/json"
     const val MUSEUM_ENDPOINT = "$BASE_URL/TuusulaMuseum.json"
 
 }
