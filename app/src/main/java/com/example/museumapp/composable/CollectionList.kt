@@ -22,7 +22,7 @@ import coil.request.ImageRequest
 import com.example.museumapp.data.remote.dto.MuseumItem
 
 @Composable
-fun ArtList(museumItems: List<MuseumItem>) {
+fun CollectionList(museumItems: List<MuseumItem>) {
     Surface {
         LazyColumn {
             items(museumItems) { item ->
