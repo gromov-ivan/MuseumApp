@@ -8,7 +8,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import com.example.museumapp.composable.CollectionList
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import com.example.museumapp.ui.theme.MuseumAppTheme
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 
 class MainActivity : ComponentActivity() {
 
@@ -19,6 +27,8 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val museumData by viewModel.museumData.observeAsState(emptyList())
+
+            val navController = rememberNavController()
             MuseumAppTheme {
                 CollectionList(museumData) // Pass the initial value from the ViewModel
 
@@ -26,9 +36,27 @@ class MainActivity : ComponentActivity() {
                 LaunchedEffect(viewModel) {
                     viewModel.fetchAteneumGraphics()
                 }
+                Surface {
+                    NavHost(navController, startDestination = "Home") {
+                        composable("Home") {
+                            Column {
+                                Text(text = "Home page")
+                                Button(onClick = {
+                                    navController.navigate("QRCodeView")
+                                }) {
+                                    Text(text = "Scan the QR code")
+                                }
+                            }
+
+                        }
+                        composable("QRCodeView") {
+                            QRCodeView()
+                        }
+                    }
+                    // Fetch museum data when the activity is created
+                    viewModel.fetchAteneumGraphics()
+                }
             }
         }
-        // Fetch museum data when the activity is created
-        viewModel.fetchAteneumGraphics()
     }
 }
