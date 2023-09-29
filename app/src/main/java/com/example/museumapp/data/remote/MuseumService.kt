@@ -13,8 +13,19 @@ import io.ktor.client.features.logging.Logging
 import io.ktor.http.ContentType.Application.Json
 
 interface MuseumService {
+    //suspend fun getRecords(): List<MuseumRecord>
+    suspend fun getTuusulaDrawings(): List<MuseumItem>
+    suspend fun getTuusulaPitures(): List<MuseumItem>
+    suspend fun getAteneumGraphics(): List<MuseumItem>
+    suspend fun getAteneumSculpture(): List<MuseumItem>
+    suspend fun getAgriculturePhotography(): List<MuseumItem>
+    suspend fun getCitiesPhotography(): List<MuseumItem>
 
-    suspend fun getMuseumArt(): List<MuseumItem>
+    suspend fun getMuseum(): List<MuseumItem>
+
+    suspend fun getRecords(): List<MuseumResponse>
+
+    suspend fun getPosts(): List<PostResponse>
 
     companion object {
         fun create(): MuseumService {
