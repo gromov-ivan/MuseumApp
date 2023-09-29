@@ -57,6 +57,22 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             MuseumAppTheme {
                 Surface {
+                    NavHost(navController, startDestination = "Home") {
+                        composable("Home") {
+                            Column {
+                                Text(text = "Home page")
+                                Button(onClick = {
+                                    navController.navigate("QRCodeView")
+                                }) {
+                                    Text(text = "Scan the QR code")
+                                }
+                            }
+
+                        }
+                        composable("QRCodeView") {
+                            QRCodeView()
+                        }
+                    }
                     LazyColumn {
                         items(museum.value) {
                             Column(
@@ -86,24 +102,6 @@ class MainActivity : ComponentActivity() {
                                 Spacer(modifier = Modifier.height(4.dp))
                             }
                         }
-                    }
-                }
-            }
-        }
-                NavHost(navController, startDestination = "Home") {
-                    composable("Home") {
-                        Column {
-                            Text(text = "Home page")
-                            Button(onClick = {
-                                navController.navigate("QRCodeView")
-                            }) {
-                                Text(text = "Scan the QR code")
-                            }
-                        }
-
-                    }
-                    composable("QRCodeView") {
-                        QRCodeView()
                     }
                 }
             }

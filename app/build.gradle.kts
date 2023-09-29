@@ -104,9 +104,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // Activity Compose
-    implementation("androidx.activity:activity-compose:1.4.0")
-
     // CameraX
     val camerax_version = "1.4.0-alpha01"
     implementation("androidx.camera:camera-camera2:${camerax_version}")
@@ -115,4 +112,14 @@ dependencies {
 
     // Zxing
     implementation("com.google.zxing:core:3.5.2")
+
+    // for material3 ModalBottomSheet
+    implementation("androidx.compose.material3:material3:1.0.0-alpha07")
+    implementation("com.google.android.material:compose-material3:1.0.0-alpha06")
+    implementation("androidx.compose.material3:material3-icons-extended:1.0.0-alpha07")
+    implementation("androidx.compose.foundation:foundation-layout:1.0.5")
+    implementation("androidx.compose.material3:material3:1.1.2")
+    implementation("androidx.compose.material3:material3-window-size-class:1.1.2")
+
+
 }
