@@ -16,6 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -26,7 +30,11 @@ import com.example.museumapp.MuseumViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
+fun CollectionsCard(
+    navController: NavController,
+    viewModel: MuseumViewModel) {
+
+    var selectedCard by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -45,7 +53,7 @@ fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp)
 
-            // Elevated card for Tuusula Museum
+
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
@@ -54,6 +62,7 @@ fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
                     .clickable {
+                        selectedCard = "Tuusula Museum"
                         // Call the function to load Tuusula Museum data
                         viewModel.fetchTuusulaPictures()
                         // Navigate to the "collectionList" screen
@@ -73,7 +82,7 @@ fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
                     )
                 }
             }
-            // Elevated card for Ateneum Museum
+
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
@@ -82,10 +91,11 @@ fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
                     .clickable {
+                        selectedCard = "Ateneum Museum"
                         // Call the function to load Ateneum Museum data
                         viewModel.fetchAteneumGraphics()
                         navController.navigate("collectionList")
-                   },
+                    },
 
                 ) {
                 Box(
@@ -100,7 +110,7 @@ fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
                     )
                 }
             }
-            // Elevated card for Photography Museum
+
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
@@ -109,10 +119,11 @@ fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
                     .clickable {
+                        selectedCard = "Photography Museum"
                         // Call the function to load Photograph Museum data
                         viewModel.fetchCitiesPhotograhs()
                         navController.navigate("collectionList")
-                       },
+                    },
 
                 )  {
                 Box(
