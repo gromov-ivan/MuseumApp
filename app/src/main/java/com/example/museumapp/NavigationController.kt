@@ -19,6 +19,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.composable.CameraView
+import com.example.museumapp.composable.CollectionDetailView
+import com.example.museumapp.composable.CollectionList
+import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FauvoritesView
 import com.example.museumapp.composable.HomePage
 import com.example.museumapp.composable.NavigationItem
@@ -28,7 +31,19 @@ fun NavigationController(navController: NavHostController) {
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
 
         composable(NavigationItem.Home.route) {
-            HomePage()
+            HomePage(navController)
+        }
+
+        composable("collectionsCard") {
+            CollectionsCard(navController)
+        }
+
+        composable("collectionList") {
+            //CollectionList(navController)
+        }
+
+        composable("collectionDetailView") {
+            CollectionDetailView()
         }
 
         composable(NavigationItem.Camera.route) {

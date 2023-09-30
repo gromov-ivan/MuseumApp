@@ -1,5 +1,6 @@
 package com.example.museumapp.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,10 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomePage() {
+fun HomePage(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -35,14 +37,15 @@ fun HomePage() {
             Text(text = "Welcome to Museum!",
                 modifier = Modifier,
                 fontSize = 30.sp)
-            Spacer(modifier = Modifier
-                .padding(20.dp))
+            Spacer(
+                modifier = Modifier
+                .padding(20.dp)
+            )
             Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                ),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .size(width = 240.dp, height = 50.dp)
+                    .clickable { navController.navigate("collectionsCard")},
 
             ) {
                 Box(
