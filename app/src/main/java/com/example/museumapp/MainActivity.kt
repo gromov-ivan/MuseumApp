@@ -46,11 +46,19 @@ class MainActivity : ComponentActivity() {
                                 }) {
                                     Text(text = "Scan the QR code")
                                 }
+                                Button(onClick = {
+                                    navController.navigate("FavouriteAnimatedView")
+                                }) {
+                                    Text(text = "FavouriteAnimatedView")
+                                }
                             }
 
                         }
                         composable("QRCodeView") {
                             QRCodeView()
+                        }
+                        composable("FavouriteAnimatedView") {
+                            FavouriteAnimatedView()
                         }
                     }
                     // Fetch museum data when the activity is created
