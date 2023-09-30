@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.ui.theme.MuseumAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +19,11 @@ class MainActivity : ComponentActivity() {
 
             val museumData by viewModel.museumData.observeAsState(emptyList())
             MuseumAppTheme {
-                CollectionList(museumData) // Pass the initial value from the ViewModel
+                Navigation()
+                //HomePage(navController = NavController(this))
+                //BottomBar(navController = NavController(this))
+                //HomePage1(navController = NavController(this))
+                //CollectionList(museumData) // Pass the initial value from the ViewModel
 
                 // Observe changes in museumData
                 LaunchedEffect(viewModel) {
