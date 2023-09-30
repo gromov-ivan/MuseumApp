@@ -22,10 +22,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.museumapp.MuseumViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CollectionsCard(navController: NavController) {
+fun CollectionsCard(navController: NavController, viewModel: MuseumViewModel) {
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -43,6 +45,7 @@ fun CollectionsCard(navController: NavController) {
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp)
 
+            // Elevated card for Tuusula Museum
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
@@ -50,7 +53,12 @@ fun CollectionsCard(navController: NavController) {
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
-                    .clickable { navController.navigate("collectionDetailView") },
+                    .clickable {
+                        // Call the function to load Tuusula Museum data
+                        viewModel.fetchTuusulaPictures()
+                        // Navigate to the "collectionList" screen
+                        navController.navigate("collectionList")
+                    },
 
                 ) {
                 Box(
@@ -65,6 +73,7 @@ fun CollectionsCard(navController: NavController) {
                     )
                 }
             }
+            // Elevated card for Ateneum Museum
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
@@ -72,7 +81,11 @@ fun CollectionsCard(navController: NavController) {
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
-                    .clickable { navController.navigate("collectionDetailView") },
+                    .clickable {
+                        // Call the function to load Ateneum Museum data
+                        viewModel.fetchAteneumGraphics()
+                        navController.navigate("collectionList")
+                   },
 
                 ) {
                 Box(
@@ -87,6 +100,7 @@ fun CollectionsCard(navController: NavController) {
                     )
                 }
             }
+            // Elevated card for Photography Museum
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
@@ -94,7 +108,11 @@ fun CollectionsCard(navController: NavController) {
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
-                    .clickable { navController.navigate("collectionDetailView") },
+                    .clickable {
+                        // Call the function to load Photograph Museum data
+                        viewModel.fetchCitiesPhotograhs()
+                        navController.navigate("collectionList")
+                       },
 
                 )  {
                 Box(

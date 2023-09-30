@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -25,9 +26,10 @@ import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FauvoritesView
 import com.example.museumapp.composable.HomePage
 import com.example.museumapp.composable.NavigationItem
+import com.example.museumapp.data.remote.dto.MuseumItem
 
 @Composable
-fun NavigationController(navController: NavHostController) {
+fun NavigationController(navController: NavHostController, viewModel: MuseumViewModel) {
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
 
         composable(NavigationItem.Home.route) {
@@ -35,11 +37,12 @@ fun NavigationController(navController: NavHostController) {
         }
 
         composable("collectionsCard") {
-            CollectionsCard(navController)
+            CollectionsCard(navController, viewModel)
         }
 
         composable("collectionList") {
-            //CollectionList(navController)
+            val museumData by viewModel.museumData.observeAsState(emptyList())
+            CollectionList(museumData)
         }
 
         composable("collectionDetailView") {
@@ -58,7 +61,7 @@ fun NavigationController(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Navigation() {
+fun Navigation(viewModel: MuseumViewModel) {
 
     val navController = rememberNavController()
 
@@ -109,7 +112,7 @@ fun Navigation() {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            NavigationController(navController = navController)
+            NavigationController(navController = navController, viewModel = viewModel)
         }
     }
 }
