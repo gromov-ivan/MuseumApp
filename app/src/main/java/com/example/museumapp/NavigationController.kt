@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +34,10 @@ import com.example.museumapp.composable.NavigationItem
 import com.example.museumapp.data.remote.dto.MuseumItem
 
 @Composable
-fun NavigationController(navController: NavHostController, viewModel: MuseumViewModel, selectedCard: String) {
+fun NavigationController(navController: NavHostController, viewModel: MuseumViewModel) {
+
+    val selectedCard = remember { mutableStateOf("") }
+
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
 
         composable(NavigationItem.Home.route) {
@@ -41,12 +45,15 @@ fun NavigationController(navController: NavHostController, viewModel: MuseumView
         }
 
         composable("collectionsCard") {
-            CollectionsCard(navController, viewModel)
+            CollectionsCard(navController, viewModel){ cardType ->
+                selectedCard.value = cardType
+                navController.navigate("collectionList")
+            }
         }
 
         composable("collectionList") {
             val museumData by viewModel.museumData.observeAsState(emptyList())
-            CollectionList(museumData, viewModel, selectedCard = selectedCard)
+            CollectionList(museumData, viewModel, selectedCard.value)
         }
 
         composable("collectionDetailView") {
@@ -68,7 +75,6 @@ fun NavigationController(navController: NavHostController, viewModel: MuseumView
 fun Navigation(viewModel: MuseumViewModel) {
 
     val navController = rememberNavController()
-    var selectedCard by remember { mutableStateOf("Tuusula Museum") }
 
     val items = listOf(
         NavigationItem.Home,
@@ -76,20 +82,6 @@ fun Navigation(viewModel: MuseumViewModel) {
         NavigationItem.Favourite
     )
 
-    // fix tabs
-    LaunchedEffect(selectedCard) {
-        // Define the tabs based on the selected card
-        val tabs = when (selectedCard) {
-            "Tuusula Museum" -> listOf("Drawings", "Pictures")
-            "Ateneum Museum" -> listOf("Graphics", "Sculptures")
-            "Photography Museum" -> listOf("Cities", "Agriculture")
-            else -> emptyList()
-        }
-
-        // Set the updated tabs
-        //tabs.clear()
-        // tabs.addAll(updatedTabs)
-    }
 
     Scaffold(
         bottomBar = {
@@ -132,7 +124,7 @@ fun Navigation(viewModel: MuseumViewModel) {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            NavigationController(navController = navController, viewModel = viewModel, selectedCard = selectedCard)
+            NavigationController(navController = navController, viewModel = viewModel)
         }
     }
 }

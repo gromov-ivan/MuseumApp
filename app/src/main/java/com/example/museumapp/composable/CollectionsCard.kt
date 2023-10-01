@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,13 +29,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.museumapp.MuseumViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollectionsCard(
     navController: NavController,
-    viewModel: MuseumViewModel) {
-
-    var selectedCard by remember { mutableStateOf("") }
+    viewModel: MuseumViewModel,
+    selectedCard: (String) -> Unit
+) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -62,7 +62,7 @@ fun CollectionsCard(
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
                     .clickable {
-                        selectedCard = "Tuusula Museum"
+                        selectedCard("Tuusula Museum")
                         // Call the function to load Tuusula Museum data
                         viewModel.fetchTuusulaPictures()
                         // Navigate to the "collectionList" screen
@@ -91,7 +91,7 @@ fun CollectionsCard(
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
                     .clickable {
-                        selectedCard = "Ateneum Museum"
+                        selectedCard("Ateneum Museum")
                         // Call the function to load Ateneum Museum data
                         viewModel.fetchAteneumGraphics()
                         navController.navigate("collectionList")
@@ -119,7 +119,7 @@ fun CollectionsCard(
                 modifier = Modifier
                     .size(width = 240.dp, height = 100.dp)
                     .clickable {
-                        selectedCard = "Photography Museum"
+                        selectedCard("Photography Museum")
                         // Call the function to load Photograph Museum data
                         viewModel.fetchCitiesPhotograhs()
                         navController.navigate("collectionList")
