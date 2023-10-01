@@ -126,12 +126,7 @@ fun CollectionList(
                         .fillMaxWidth()
                         .padding(10.dp)
                         .clickable {
-                            navController.navigate("collectionDetailView")
-                            /* TODO*/
-                            // Call the function to load Tuusula Museum data
-                            //viewModel.fetchTuusulaDrawings()
-                            // Navigate to the "collectionList" screen
-                            //navController.navigate("collectionList")
+                            navController.navigate("collectionDetailView/${item.id}")
                         }
                 ) {
                     Column(

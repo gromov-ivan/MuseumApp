@@ -13,10 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.museumapp.data.remote.dto.MuseumItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CollectionDetailView() {
+fun CollectionDetailView(selectedItem: MuseumItem) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -29,7 +30,7 @@ fun CollectionDetailView() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Collections detail View")
-
+            Text(text = "Title: ${selectedItem.title}")
         }
     }
 }

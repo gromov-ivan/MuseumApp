@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -55,8 +56,20 @@ fun NavigationController(
             CollectionList(museumData, viewModel, selectedCard.value, navController)
         }
 
-        composable("collectionDetailView") {
-            CollectionDetailView()
+        composable("collectionDetailView/{itemId}") {backStackEntry ->
+            // Extract the item ID from the navigation arguments
+            val itemId = backStackEntry.arguments?.getString("itemId")
+            val museumData by viewModel.museumData.observeAsState(emptyList())
+            // Retrieve the corresponding MuseumItem based on the item ID
+            val selectedItem = museumData.find { it.id == itemId }
+
+            if (selectedItem != null) {
+                // Pass the selected item to the CollectionDetailView composable
+                CollectionDetailView(selectedItem)
+            } else {
+                // Handle the case where the item is not found
+                Text(text = "Item not found", fontSize = 20.sp)
+            }
         }
 
         composable(NavigationItem.Camera.route) {
