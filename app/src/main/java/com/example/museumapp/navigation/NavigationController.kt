@@ -30,7 +30,10 @@ import com.example.museumapp.composable.FauvoritesView
 import com.example.museumapp.composable.HomePage
 
 @Composable
-fun NavigationController(navController: NavHostController, viewModel: MuseumViewModel) {
+fun NavigationController(
+    navController: NavHostController,
+    viewModel: MuseumViewModel
+    ) {
 
     val selectedCard = remember { mutableStateOf("") }
 
@@ -49,7 +52,7 @@ fun NavigationController(navController: NavHostController, viewModel: MuseumView
 
         composable("collectionList") {
             val museumData by viewModel.museumData.observeAsState(emptyList())
-            CollectionList(museumData, viewModel, selectedCard.value)
+            CollectionList(museumData, viewModel, selectedCard.value, navController)
         }
 
         composable("collectionDetailView") {
@@ -114,7 +117,8 @@ fun Navigation(viewModel: MuseumViewModel) {
                         })
                 }
             }
-        }) {innerPadding ->
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding),
