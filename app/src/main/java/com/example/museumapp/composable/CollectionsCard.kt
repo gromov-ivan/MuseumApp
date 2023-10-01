@@ -64,7 +64,7 @@ fun CollectionsCard(
                     .clickable {
                         selectedCard("Tuusula Museum")
                         // Call the function to load Tuusula Museum data
-                        viewModel.fetchTuusulaPictures()
+                        viewModel.fetchTuusulaDrawings()
                         // Navigate to the "collectionList" screen
                         navController.navigate("collectionList")
                     },
