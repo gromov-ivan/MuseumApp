@@ -1,4 +1,4 @@
-package com.example.museumapp
+package com.example.museumapp.navigation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,13 +10,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -24,14 +21,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.museumapp.viewModel.MuseumViewModel
 import com.example.museumapp.composable.CameraView
 import com.example.museumapp.composable.CollectionDetailView
 import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FauvoritesView
 import com.example.museumapp.composable.HomePage
-import com.example.museumapp.composable.NavigationItem
-import com.example.museumapp.data.remote.dto.MuseumItem
 
 @Composable
 fun NavigationController(navController: NavHostController, viewModel: MuseumViewModel) {

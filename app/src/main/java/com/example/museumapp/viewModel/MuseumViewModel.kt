@@ -1,4 +1,4 @@
-package com.example.museumapp
+package com.example.museumapp.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

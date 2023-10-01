@@ -1,6 +1,5 @@
-package com.example.museumapp.composable
+package com.example.museumapp.navigation
 
-import android.graphics.drawable.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.FavoriteBorder
