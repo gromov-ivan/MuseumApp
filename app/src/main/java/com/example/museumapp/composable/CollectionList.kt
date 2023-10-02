@@ -1,15 +1,31 @@
 package com.example.museumapp.composable
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -20,6 +36,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -124,20 +143,26 @@ fun CollectionList(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp)
+                        .padding(7.dp)
                         .clickable {
+                            Log.d("MyApp", "Navigating to collectionDetailView/${item.id}")
                             navController.navigate("collectionDetailView/${item.id}")
-                        }
+                        },
+
+
                 ) {
-                    Column(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
+                            .padding(5.dp),
+                        //horizontalArrangement = Arrangement.spacedBy(8.dp),
+                       // verticalAlignment = Alignment.CenterVertically
                     ) {
                         val painter =
                             rememberAsyncImagePainter(
                                 ImageRequest.Builder(LocalContext.current)
-                                    .data(data = item.images).apply(block = fun ImageRequest.Builder.() {
+                                    .data(data = item.images)
+                                    .apply(block = fun ImageRequest.Builder.() {
                                         // You can configure image loading options here if needed
                                     }).build()
                             )
@@ -145,15 +170,43 @@ fun CollectionList(
                             painter = painter,
                             contentDescription = null,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp), // Adjust the height as needed
+                                .size(100.dp)
+                                .clip(shape = RoundedCornerShape(2.dp)),
                             contentScale = ContentScale.Crop, // Adjust the content scale as needed
-                            alignment = Alignment.TopStart,
+                            alignment = Alignment.Center,
                         )
-                        Text(text = item.title, fontSize = 20.sp)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "${item.year}", fontSize = 14.sp)
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.width(10.dp)) // Add spacing between image and text
+                        Column (
+                            modifier = Modifier.weight(0.7f), // Let the text occupy 70% of the available space
+                        ) {
+                            Text(
+                                text = "${item.title}.",
+                                fontSize = 17.sp,
+                                modifier = Modifier
+                                    .widthIn(max = 200.dp)
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = item.nonPresenterAuthorsName, fontSize = 14.sp)
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Box {
+                            IconButton(
+                                onClick = {
+                                    // Handle favorite button click here
+                                },
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .align(Alignment.TopEnd)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.FavoriteBorder,
+                                    contentDescription = "Favorite",
+                                    modifier = Modifier
+                                        .size(30.dp)
+                                        .padding(end = 5.dp)
+                                )
+                            }
+                        }
                     }
                 }
             }
