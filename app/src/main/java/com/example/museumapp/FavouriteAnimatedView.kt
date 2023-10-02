@@ -19,8 +19,19 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.cos
 import kotlin.math.sin
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import kotlinx.coroutines.launch
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.rememberCoroutineScope
+
 
 @ExperimentalFoundationApi
 @Composable
@@ -56,6 +67,8 @@ fun FavouriteAnimatedView() {
         initialPage = 0
     )
 
+    val scope = rememberCoroutineScope()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -90,6 +103,48 @@ fun FavouriteAnimatedView() {
                         .padding(40.dp)
 
                 )
+            }
+            Box(
+                modifier = Modifier
+                    .offset(y = -(16).dp)
+                    .fillMaxWidth(0.5f)
+                    .padding(8.dp)
+                    .align(Alignment.BottomCenter)
+            ) {
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(
+                                pagerState.currentPage - 1
+                            )
+                        }
+                    },
+                    modifier = Modifier.align(Alignment.CenterStart)
+                        .clip(RoundedCornerShape(100))
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowLeft,
+                        contentDescription = "Go back"
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(
+                                pagerState.currentPage + 1
+                            )
+                        }
+                    },
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                        .clip(RoundedCornerShape(100))
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Go forward"
+                    )
+                }
             }
         }
     }
