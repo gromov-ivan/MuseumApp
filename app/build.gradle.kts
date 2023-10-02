@@ -105,4 +105,16 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // CameraX
+    val camerax_version = "1.4.0-alpha01"
+    implementation("androidx.camera:camera-camera2:${camerax_version}")
+    implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation("androidx.camera:camera-view:${camerax_version}")
+
+    // Zxing
+    implementation("com.google.zxing:core:3.5.2")
+
+    // for material3 ModalBottomSheet
+    implementation("androidx.compose.material3:material3:1.1.2")
 }
