@@ -1,17 +1,12 @@
-package com.example.museumapp
+package com.example.museumapp.viewModel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.museumapp.data.remote.MuseumService
 import com.example.museumapp.data.remote.dto.MuseumItem
-import com.example.museumapp.data.remote.dto.MuseumResponse
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MuseumViewModel : ViewModel() {
@@ -29,7 +24,7 @@ class MuseumViewModel : ViewModel() {
                 val drawingsData = service.getTuusulaDrawings()
                 _museumData.value = drawingsData
             } catch (e: Exception) {
-                // Handle errors here, e.g., show an error message
+                Log.e("DBG", "Error fetching data: ${e.message}")
             }
         }
     }
@@ -41,7 +36,7 @@ class MuseumViewModel : ViewModel() {
                 val picturesData = service.getTuusulaPitures()
                 _museumData.value = picturesData
             } catch (e: Exception) {
-                // Handle errors here, e.g., show an error message
+                Log.e("DBG", "Error fetching data: ${e.message}")
             }
         }
     }
@@ -53,7 +48,7 @@ class MuseumViewModel : ViewModel() {
                 val agricultureData = service.getAgriculturePhotography()
                 _museumData.value = agricultureData
             } catch (e: Exception) {
-                // Handle errors here, e.g., show an error message
+                Log.e("DBG", "Error fetching data: ${e.message}")
             }
         }
     }
@@ -65,7 +60,7 @@ class MuseumViewModel : ViewModel() {
                 val citiesData = service.getCitiesPhotography()
                 _museumData.value = citiesData
             } catch (e: Exception) {
-                // Handle errors here, e.g., show an error message
+                Log.e("DBG", "Error fetching data: ${e.message}")
             }
         }
     }
@@ -77,7 +72,7 @@ class MuseumViewModel : ViewModel() {
                 val graphicsData = service.getAteneumGraphics()
                 _museumData.value = graphicsData
             } catch (e: Exception) {
-                // Handle errors here, e.g., show an error message
+                Log.e("DBG", "Error fetching data: ${e.message}")
             }
         }
     }
@@ -89,7 +84,7 @@ class MuseumViewModel : ViewModel() {
                 val sculptureData = service.getAteneumSculpture()
                 _museumData.value = sculptureData
             } catch (e: Exception) {
-                // Handle errors here, e.g., show an error message
+                Log.e("DBG", "Error fetching data: ${e.message}")
             }
         }
     }
