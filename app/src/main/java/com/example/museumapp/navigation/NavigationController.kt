@@ -26,7 +26,7 @@ import com.example.museumapp.composable.CameraView
 import com.example.museumapp.composable.CollectionDetailView
 import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
-import com.example.museumapp.composable.FauvoritesView
+import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -77,7 +77,7 @@ fun NavigationController(
         }
 
         composable(NavigationItem.Favourite.route) {
-            FauvoritesView()
+            FavouritesView()
         }
     }
 }
