@@ -158,8 +158,6 @@ fun CollectionList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(5.dp),
-                        //horizontalArrangement = Arrangement.spacedBy(8.dp),
-                       // verticalAlignment = Alignment.CenterVertically
                     ) {
                         val painter =
                             rememberAsyncImagePainter(
@@ -175,10 +173,10 @@ fun CollectionList(
                             modifier = Modifier
                                 .size(100.dp)
                                 .clip(shape = RoundedCornerShape(2.dp)),
-                            contentScale = ContentScale.Crop, // Adjust the content scale as needed
+                            contentScale = ContentScale.Crop,
                             alignment = Alignment.Center,
                         )
-                        Spacer(modifier = Modifier.width(10.dp)) // Add spacing between image and text
+                        Spacer(modifier = Modifier.width(10.dp))
                         Column (
                             modifier = Modifier.weight(0.7f), // Let the text occupy 70% of the available space
                         ) {
