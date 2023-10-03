@@ -48,6 +48,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.museumapp.viewModel.MuseumViewModel
 import com.example.museumapp.data.remote.dto.MuseumItem
+import java.net.URLEncoder
 
 @Composable
 fun CollectionList(
@@ -146,7 +147,9 @@ fun CollectionList(
                         .padding(7.dp)
                         .clickable {
                             Log.d("MyApp", "Navigating to collectionDetailView/${item.id}")
-                            navController.navigate("collectionDetailView/${item.id}")
+                            // encode item.id to use the value in the navigation route
+                            val encodedItemId = URLEncoder.encode(item.id, "UTF-8")
+                            navController.navigate("collectionDetailView/${encodedItemId}")
                         },
 
 
@@ -155,8 +158,6 @@ fun CollectionList(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(5.dp),
-                        //horizontalArrangement = Arrangement.spacedBy(8.dp),
-                       // verticalAlignment = Alignment.CenterVertically
                     ) {
                         val painter =
                             rememberAsyncImagePainter(
@@ -172,10 +173,10 @@ fun CollectionList(
                             modifier = Modifier
                                 .size(100.dp)
                                 .clip(shape = RoundedCornerShape(2.dp)),
-                            contentScale = ContentScale.Crop, // Adjust the content scale as needed
+                            contentScale = ContentScale.Crop,
                             alignment = Alignment.Center,
                         )
-                        Spacer(modifier = Modifier.width(10.dp)) // Add spacing between image and text
+                        Spacer(modifier = Modifier.width(10.dp))
                         Column (
                             modifier = Modifier.weight(0.7f), // Let the text occupy 70% of the available space
                         ) {
