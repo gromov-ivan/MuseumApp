@@ -48,6 +48,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.museumapp.viewModel.MuseumViewModel
 import com.example.museumapp.data.remote.dto.MuseumItem
+import java.net.URLEncoder
 
 @Composable
 fun CollectionList(
@@ -146,7 +147,9 @@ fun CollectionList(
                         .padding(7.dp)
                         .clickable {
                             Log.d("MyApp", "Navigating to collectionDetailView/${item.id}")
-                            navController.navigate("collectionDetailView/${item.id}")
+                            // encode item.id to use the value in the navigation route
+                            val encodedItemId = URLEncoder.encode(item.id, "UTF-8")
+                            navController.navigate("collectionDetailView/${encodedItemId}")
                         },
 
 
