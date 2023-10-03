@@ -1,5 +1,6 @@
 package com.example.museumapp.navigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -27,9 +28,10 @@ import com.example.museumapp.composable.CameraView
 import com.example.museumapp.composable.CollectionDetailView
 import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
-import com.example.museumapp.composable.FauvoritesView
+import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NavigationController(
     navController: NavHostController,
@@ -77,7 +79,7 @@ fun NavigationController(
         }
 
         composable(NavigationItem.Favourite.route) {
-            FauvoritesView()
+            FavouritesView()
         }
     }
 }
