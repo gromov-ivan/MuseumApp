@@ -8,6 +8,7 @@ import com.example.museumapp.navigation.Navigation
 import com.example.museumapp.ui.theme.MuseumAppTheme
 import com.example.museumapp.viewModel.MuseumViewModel
 
+
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MuseumViewModel>()

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+//    id("kotlin-kapt")
 }
 
 android {
@@ -68,7 +69,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
-    val nav_version = "2.7.1"
+    val nav_version = "2.7.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     val lifecycle_version = "2.6.2"
