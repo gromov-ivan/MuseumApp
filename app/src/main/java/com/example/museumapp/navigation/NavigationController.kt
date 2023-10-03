@@ -1,11 +1,11 @@
 package com.example.museumapp.navigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,7 +21,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.viewModel.MuseumViewModel
 import com.example.museumapp.composable.CameraView
 import com.example.museumapp.composable.CollectionDetailView
@@ -30,11 +29,12 @@ import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NavigationController(
     navController: NavHostController,
     viewModel: MuseumViewModel
-    ) {
+) {
 
     val selectedCard = remember { mutableStateOf("") }
 
@@ -82,18 +82,14 @@ fun NavigationController(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Navigation(viewModel: MuseumViewModel) {
-
-    val navController = rememberNavController()
+fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
 
     val items = listOf(
         NavigationItem.Home,
         NavigationItem.Camera,
         NavigationItem.Favourite
     )
-
 
     Scaffold(
         bottomBar = {
@@ -119,7 +115,7 @@ fun Navigation(viewModel: MuseumViewModel) {
                         onClick = {
                             if(currentRoute!=it.route){
 
-                                navController.graph?.startDestinationRoute?.let {
+                                navController.graph.startDestinationRoute?.let {
                                     navController.popBackStack(it,true)
                                 }
 
