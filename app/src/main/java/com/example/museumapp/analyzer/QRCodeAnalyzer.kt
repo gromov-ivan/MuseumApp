@@ -1,4 +1,4 @@
-package com.example.museumapp
+package com.example.museumapp.analyzer
 
 import android.graphics.ImageFormat
 import androidx.camera.core.ImageAnalysis

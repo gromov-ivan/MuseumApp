@@ -1,4 +1,4 @@
-package com.example.museumapp
+package com.example.museumapp.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Image
@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import kotlinx.coroutines.launch
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.rememberCoroutineScope
+import com.example.museumapp.R
 
 
 @ExperimentalFoundationApi
