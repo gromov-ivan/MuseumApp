@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         }
 
         MuseumAppTheme {
-            Navigation(viewModel, navController)
+            Navigation(viewModel)
         }
     }
 
