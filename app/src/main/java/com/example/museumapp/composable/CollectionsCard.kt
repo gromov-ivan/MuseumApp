@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,28 +32,32 @@ fun CollectionsCard(
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
+                .padding(32.dp),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Choose the museum you are interested about.",
+            Text(
+                text = "Choose the museum you are interested in...",
                 modifier = Modifier
-                    .padding(5.dp),
-                textAlign = TextAlign.Center,
-                fontSize = 20.sp)
-
+                    .padding(0.dp, 0.dp, 0.dp, 64.dp),
+                textAlign = TextAlign.Left,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
 
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 10.dp
+                    defaultElevation = 0.dp
                 ),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
-                    .size(width = 240.dp, height = 100.dp)
+                    .padding(8.dp)
+                    .size(width = 240.dp, height = 60.dp)
+                    .padding(4.dp)
                     .clickable {
                         selectedCard("Tuusula Museum")
                         // Call the function to load Tuusula Museum data
@@ -76,11 +82,13 @@ fun CollectionsCard(
 
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 10.dp
+                    defaultElevation = 0.dp
                 ),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
-                    .size(width = 240.dp, height = 100.dp)
+                    .padding(8.dp)
+                    .size(width = 240.dp, height = 60.dp)
+                    .padding(4.dp)
                     .clickable {
                         selectedCard("Ateneum Museum")
                         // Call the function to load Ateneum Museum data
@@ -104,11 +112,13 @@ fun CollectionsCard(
 
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 10.dp
+                    defaultElevation = 0.dp
                 ),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
-                    .size(width = 240.dp, height = 100.dp)
+                    .padding(8.dp)
+                    .size(width = 240.dp, height = 60.dp)
+                    .padding(4.dp)
                     .clickable {
                         selectedCard("Photography Museum")
                         // Call the function to load Photograph Museum data
@@ -129,6 +139,16 @@ fun CollectionsCard(
                     )
                 }
             }
+
+            /*
+            Text(
+                text = "Tip: shake your phone whenever you want to select a different museum.",
+                modifier = Modifier
+                    .padding(16.dp),
+                textAlign = TextAlign.Left,
+                fontSize = 18.sp
+            )
+            */
         }
     }
 }
