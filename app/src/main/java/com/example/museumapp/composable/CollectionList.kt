@@ -2,15 +2,11 @@ package com.example.museumapp.composable
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -37,8 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -46,8 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.museumapp.viewModel.MuseumViewModel
 import com.example.museumapp.data.remote.dto.MuseumItem
+import com.example.museumapp.viewModel.MuseumViewModel
 import java.net.URLEncoder
 
 @Composable
@@ -77,28 +70,6 @@ fun CollectionList(
                     selected = selectedTabIndex == index,
                     onClick = {
                         selectedTabIndex = index
-                        // call corresponding function
-                        when (selectedCard) {
-                            "Tuusula Museum" -> {
-                                when (index) {
-                                    0 -> viewModel.fetchTuusulaDrawings()
-                                    1 -> viewModel.fetchTuusulaPictures()
-                                }
-                            }
-                            "Ateneum Museum" -> {
-                                when (index) {
-                                    0 -> viewModel.fetchAteneumGraphics()
-                                    1 -> viewModel.fetchAteneumSculptures()
-                                }
-                            }
-                            "Photography Museum" -> {
-                                when (index) {
-                                    0 -> viewModel.fetchCitiesPhotograhs()
-                                    1 -> viewModel.fetchAgriculturePhotographs()
-                                }
-                            }
-                        }
-
                     },
                     text = { Text(text = title) }
                 )
@@ -111,9 +82,11 @@ fun CollectionList(
                 when (selectedTabIndex) {
                     0 -> {
                         Text(text = "Tuusula Museum - Drawings collection")
+                        viewModel.fetchTuusulaDrawings()
                     }
                     1 -> {
                         Text(text = "Tuusula Museum - Pictures collection")
+                        viewModel.fetchTuusulaPictures()
                     }
                 }
             }
@@ -121,9 +94,11 @@ fun CollectionList(
                 when (selectedTabIndex) {
                     0 -> {
                         Text(text = "Ateneum Museum - Graphics collection")
+                        viewModel.fetchAteneumGraphics()
                     }
                     1 -> {
                         Text(text = "Ateneum Museum - Sculpture collection")
+                        viewModel.fetchAteneumSculptures()
                     }
                 }
             }
@@ -131,9 +106,11 @@ fun CollectionList(
                 when (selectedTabIndex) {
                     0 -> {
                         Text(text = "Photography Museum - Cities collection")
+                        viewModel.fetchCitiesPhotograhs()
                     }
                     1 -> {
                         Text(text = "Photography Museum - Agriculture collection")
+                        viewModel.fetchAgriculturePhotographs()
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package com.example.museumapp.navigation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -21,20 +20,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.museumapp.viewModel.MuseumViewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.composable.CameraView
 import com.example.museumapp.composable.CollectionDetailView
 import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
+import com.example.museumapp.viewModel.MuseumViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NavigationController(
     navController: NavHostController,
     viewModel: MuseumViewModel
-) {
+    ) {
 
     val selectedCard = remember { mutableStateOf("") }
 
@@ -83,7 +82,9 @@ fun NavigationController(
 }
 
 @Composable
-fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
+fun Navigation(viewModel: MuseumViewModel) {
+
+    val navController = rememberNavController()
 
     val items = listOf(
         NavigationItem.Home,
@@ -98,32 +99,33 @@ fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                items.forEach {
-                    BottomNavigationItem(selected = currentRoute == it.route,
+                items.forEach {item ->
+                    val isSelected = currentRoute == item.route
+                    BottomNavigationItem(selected = isSelected,
                         label = {
                             Text(
-                                text = it.label,
-                                //color = if (currentRoute == it.route) Color.DarkGray else Color.LightGray
+                                text = item.label
                             )
                         },
                         icon = {
                             Icon(
-                                imageVector = it.icon, contentDescription = null,
-                                //tint = if (currentRoute == it.route) Color.DarkGray else Color.LightGray
+                                imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
+                                contentDescription = null
                             )
                         },
                         onClick = {
-                            if(currentRoute!=it.route){
+                            if(!isSelected){
 
-                                navController.graph.startDestinationRoute?.let {
+                                navController.graph?.startDestinationRoute?.let {
                                     navController.popBackStack(it,true)
                                 }
 
-                                navController.navigate(it.route){
+                                navController.navigate(item.route){
                                     launchSingleTop = true
                                 }
                             }
-                        })
+                        }
+                    )
                 }
             }
         }
