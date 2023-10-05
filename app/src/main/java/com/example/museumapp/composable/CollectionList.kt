@@ -164,7 +164,7 @@ fun CollectionList(
                                     .widthIn(max = 200.dp)
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = item.nonPresenterAuthorsName, fontSize = 14.sp)
+                            Text(text = item.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist", fontSize = 14.sp)
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Box {

@@ -56,7 +56,7 @@ fun CollectionDetailView(selectedItem: MuseumItem) {
                 fontSize = 20.sp,
                 modifier = Modifier
                     .padding(start = 30.dp, top = 2.dp, end = 20.dp, bottom = 10.dp))
-            Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName}",
+            Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist."}",
                 fontSize = 18.sp,
                 modifier = Modifier
                     .padding(start = 30.dp, top = 2.dp, end = 30.dp, bottom = 10.dp))
