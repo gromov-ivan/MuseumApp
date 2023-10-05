@@ -81,7 +81,7 @@ fun NavigationController(
 }
 
 @Composable
-fun Navigation(viewModel: MuseumViewModel) {
+fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
 
     val navController = rememberNavController()
 
