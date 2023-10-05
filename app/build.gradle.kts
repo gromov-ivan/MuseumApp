@@ -1,7 +1,11 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -31,11 +35,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -53,6 +57,7 @@ android {
 dependencies {
 
     implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
 
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
@@ -67,7 +72,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
-    val nav_version = "2.7.1"
+    val nav_version = "2.7.3"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     val lifecycle_version = "2.6.2"
@@ -84,11 +89,18 @@ dependencies {
     // Saved state module for ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version")
 
-    implementation("androidx.compose.runtime:runtime:1.5.1")
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.1")
-    implementation("androidx.compose.runtime:runtime-rxjava2:1.5.1")
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    // Room Database
+    val room_version = "2.5.2"
+    implementation ("androidx.room:room-runtime:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation ("androidx.room:room-ktx:$room_version")
+
+    implementation("androidx.compose.runtime:runtime:1.5.2")
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.2")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.5.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-alpha02")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
