@@ -1,18 +1,21 @@
 package com.example.museumapp
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.util.ShakeDetector
-import com.example.museumapp.navigation.Navigation
 import com.example.museumapp.ui.theme.MuseumAppTheme
 import com.example.museumapp.viewModel.MuseumViewModel
-import androidx.navigation.compose.rememberNavController
+import com.example.museumapp.composable.FeedbackBottomSheet
+import com.example.museumapp.navigation.Navigation
 
 class MainActivity : ComponentActivity() {
 
@@ -27,20 +30,27 @@ class MainActivity : ComponentActivity() {
         mShakeDetector = ShakeDetector()
 
         setContent {
-            AppContent(viewModel, mShakeDetector)
+            AppContent(viewModel)
         }
     }
 
     @Composable
-    fun AppContent(viewModel: MuseumViewModel, shakeDetector: ShakeDetector?) {
+    fun AppContent(viewModel: MuseumViewModel) {
         val navController = rememberNavController()
-
-        shakeDetector?.setOnShakeListener {
-            navController.navigate("collectionsCard")
-        }
 
         MuseumAppTheme {
             Navigation(viewModel, navController)
+
+            FeedbackBottomSheet(
+                shakeDetector = mShakeDetector,
+                onSendFeedback = { feedback ->
+                    val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "ivan@metropolia.fi", null)).apply {
+                        putExtra(Intent.EXTRA_SUBJECT, "Museum App Feedback")
+                        putExtra(Intent.EXTRA_TEXT, feedback)
+                    }
+                    startActivity(emailIntent)
+                }
+            )
         }
     }
 
@@ -54,4 +64,3 @@ class MainActivity : ComponentActivity() {
         super.onPause()
     }
 }
-
