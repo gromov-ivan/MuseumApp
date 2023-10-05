@@ -26,6 +26,13 @@ import com.example.museumapp.data.remote.dto.MuseumItem
 @Composable
 fun CollectionDetailView(selectedItem: MuseumItem) {
 
+    val painter = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current)
+            .data(data = selectedItem.images).apply(block = fun ImageRequest.Builder.() {
+                crossfade(true)
+            }).build()
+    )
+
     Box(
         modifier = Modifier.fillMaxSize()
         .verticalScroll(rememberScrollState())
@@ -35,13 +42,6 @@ fun CollectionDetailView(selectedItem: MuseumItem) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val painter =
-                rememberAsyncImagePainter(
-                    ImageRequest.Builder(LocalContext.current)
-                        .data(data = selectedItem.images).apply(block = fun ImageRequest.Builder.() {
-                            // You can configure image loading options here if needed
-                        }).build()
-                )
             Image(
                 painter = painter,
                 contentDescription = null,
@@ -56,7 +56,7 @@ fun CollectionDetailView(selectedItem: MuseumItem) {
                 fontSize = 20.sp,
                 modifier = Modifier
                     .padding(start = 30.dp, top = 2.dp, end = 20.dp, bottom = 10.dp))
-            Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName}",
+            Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist."}",
                 fontSize = 18.sp,
                 modifier = Modifier
                     .padding(start = 30.dp, top = 2.dp, end = 30.dp, bottom = 10.dp))
