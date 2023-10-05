@@ -46,7 +46,6 @@ fun NavigationController(
         composable("collectionsCard") {
             CollectionsCard(navController, museumViewModel){ cardType ->
                 selectedCard.value = cardType
-                navController.navigate("collectionList")
             }
         }
 

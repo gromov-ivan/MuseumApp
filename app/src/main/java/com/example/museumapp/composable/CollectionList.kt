@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
@@ -136,12 +137,11 @@ fun CollectionList(
                             .fillMaxWidth()
                             .padding(5.dp),
                     ) {
-                        val painter =
-                            rememberAsyncImagePainter(
+                        val painter = rememberAsyncImagePainter(
                                 ImageRequest.Builder(LocalContext.current)
                                     .data(data = item.images)
                                     .apply(block = fun ImageRequest.Builder.() {
-                                        // You can configure image loading options here if needed
+                                        crossfade(true)
                                     }).build()
                             )
                         Image(
@@ -164,7 +164,7 @@ fun CollectionList(
                                     .widthIn(max = 200.dp)
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = item.nonPresenterAuthorsName, fontSize = 14.sp)
+                            Text(text = item.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist", fontSize = 14.sp)
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Box {
