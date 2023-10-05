@@ -1,5 +1,6 @@
 package com.example.museumapp.data.remote
 
+import android.net.http.HttpResponseCache.install
 import com.example.museumapp.data.remote.dto.MuseumItem
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android

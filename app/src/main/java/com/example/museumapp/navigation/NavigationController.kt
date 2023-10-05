@@ -32,7 +32,7 @@ import com.example.museumapp.viewModel.MuseumViewModel
 @Composable
 fun NavigationController(
     navController: NavHostController,
-    viewModel: MuseumViewModel
+    museumViewModel: MuseumViewModel
     ) {
 
     val selectedCard = remember { mutableStateOf("") }
@@ -44,27 +44,27 @@ fun NavigationController(
         }
 
         composable("collectionsCard") {
-            CollectionsCard(navController, viewModel){ cardType ->
+            CollectionsCard(navController, museumViewModel){ cardType ->
                 selectedCard.value = cardType
                 navController.navigate("collectionList")
             }
         }
 
         composable("collectionList") {
-            val museumData by viewModel.museumData.observeAsState(emptyList())
-            CollectionList(museumData, viewModel, selectedCard.value, navController)
+            val museumData by museumViewModel.museumData.observeAsState(emptyList())
+            CollectionList(museumData, museumViewModel, selectedCard.value, navController)
         }
 
         composable("collectionDetailView/{itemId}") {backStackEntry ->
             // Extract the item ID from the navigation arguments
             val itemId = backStackEntry.arguments?.getString("itemId")
-            val museumData by viewModel.museumData.observeAsState(emptyList())
+            val museumData by museumViewModel.museumData.observeAsState(emptyList())
             // Retrieve the corresponding MuseumItem based on the item ID
             val selectedItem = museumData.find { it.id == itemId }
 
             if (selectedItem != null) {
                 // Pass the selected item to the CollectionDetailView composable
-                CollectionDetailView(selectedItem)
+                CollectionDetailView(selectedItem, museumViewModel)
             } else {
                 // Handle the case where the item is not found
                 Text(text = "Item not found", fontSize = 20.sp)
@@ -82,7 +82,7 @@ fun NavigationController(
 }
 
 @Composable
-fun Navigation(viewModel: MuseumViewModel) {
+fun Navigation(museumViewModel: MuseumViewModel) {
 
     val navController = rememberNavController()
 
@@ -135,7 +135,7 @@ fun Navigation(viewModel: MuseumViewModel) {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            NavigationController(navController = navController, viewModel = viewModel)
+            NavigationController(navController = navController, museumViewModel = MuseumViewModel())
         }
     }
 }
