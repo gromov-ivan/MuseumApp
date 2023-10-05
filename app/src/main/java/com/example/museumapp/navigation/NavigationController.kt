@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,6 +28,7 @@ import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
+import com.example.museumapp.viewModel.FavouriteItemViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 
 @Composable
@@ -51,7 +53,8 @@ fun NavigationController(
 
         composable("collectionList") {
             val museumData by museumViewModel.museumData.observeAsState(emptyList())
-            CollectionList(museumData, museumViewModel, selectedCard.value, navController)
+            val favouriteItemViewModel = viewModel<FavouriteItemViewModel>()
+            CollectionList(museumData, museumViewModel, selectedCard.value, navController, favouriteItemViewModel)
         }
 
         composable("collectionDetailView/{itemId}") {backStackEntry ->

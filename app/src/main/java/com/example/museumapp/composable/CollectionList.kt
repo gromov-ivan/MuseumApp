@@ -38,9 +38,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.museumapp.data.remote.dto.MuseumItem
+import com.example.museumapp.room.FavouriteItem
+import com.example.museumapp.viewModel.FavouriteItemViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 import java.net.URLEncoder
 
@@ -49,8 +52,9 @@ fun CollectionList(
     museumItems: List<MuseumItem>,
     viewModel: MuseumViewModel,
     selectedCard: String,
-    navController: NavController
-    ) {
+    navController: NavHostController,
+    favouriteItemViewModel: FavouriteItemViewModel
+) {
 
     var selectedTabIndex by remember { mutableStateOf(0) }
 
@@ -171,6 +175,11 @@ fun CollectionList(
                             IconButton(
                                 onClick = {
                                     // Handle favorite button click here
+                                          val favouriteItem = FavouriteItem(
+                                              itemId = item.id,
+                                              itemName = item.title
+                                          )
+                                    favouriteItemViewModel.insertFavouriteItem(favouriteItem)
                                 },
                                 modifier = Modifier
                                     .size(30.dp)

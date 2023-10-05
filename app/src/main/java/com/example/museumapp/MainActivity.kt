@@ -7,38 +7,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.example.museumapp.util.ShakeDetector
 import com.example.museumapp.navigation.Navigation
 import com.example.museumapp.ui.theme.MuseumAppTheme
 import com.example.museumapp.viewModel.MuseumViewModel
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import androidx.room.Room
-import com.example.museumapp.composable.CollectionDetailView
-import com.example.museumapp.composable.HomePage
+import com.example.museumapp.composable.CollectionList
+import com.example.museumapp.data.remote.dto.MuseumItem
 import com.example.museumapp.navigation.NavigationItem
-import com.example.museumapp.room.FavouriteListView
 import com.example.museumapp.viewModel.FavouriteItemViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-//    private val viewModel by viewModels<MuseumViewModel>()
+    //    private val viewModel by viewModels<MuseumViewModel>()
 //    private lateinit var museumDatabase: MuseumDatabase
 //    private lateinit var museumViewModel: MuseumViewModel
-    private val museumViewModel: MuseumViewModel by viewModels()
-    private val favouriteItemViewModel: FavouriteItemViewModel by viewModels()
+    private val museumViewModel by viewModels<MuseumViewModel>()
+    private val favouriteItemViewModel by viewModels<FavouriteItemViewModel>()
     private var mSensorManager: SensorManager? = null
     private var mShakeDetector: ShakeDetector? = null
 
@@ -51,16 +37,18 @@ class MainActivity : ComponentActivity() {
 //        museumViewModel = ViewModelProvider(this).get(MuseumViewModel::class.java)
 //        favouriteItemViewModel = ViewModelProvider(this).get(FavouriteItemViewModel::class.java)
 
-
-
         setContent {
-            AppContent(museumViewModel, mShakeDetector)
+            AppContent(museumViewModel, mShakeDetector, favouriteItemViewModel)
 
         }
     }
 
     @Composable
-    fun AppContent(viewModel: MuseumViewModel, shakeDetector: ShakeDetector?) {
+    fun AppContent(
+        viewModel: MuseumViewModel,
+        shakeDetector: ShakeDetector?,
+        favouriteItemViewModel: FavouriteItemViewModel
+    ) {
         val navController = rememberNavController()
 
         shakeDetector?.setOnShakeListener {
@@ -69,19 +57,27 @@ class MainActivity : ComponentActivity() {
 
         MuseumAppTheme {
             Navigation(viewModel)
+            CollectionList(
+                museumItems = emptyList(),
+            viewModel = viewModel,
+            selectedCard = toString(),
+            navController= navController,
+            favouriteItemViewModel = favouriteItemViewModel
+            )
         }
     }
 
     override fun onResume() {
         super.onResume()
-        mSensorManager?.registerListener(mShakeDetector, mSensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI)
+        mSensorManager?.registerListener(
+            mShakeDetector,
+            mSensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_UI
+        )
     }
 
     override fun onPause() {
         mSensorManager?.unregisterListener(mShakeDetector)
         super.onPause()
     }
-
 }
-
-
