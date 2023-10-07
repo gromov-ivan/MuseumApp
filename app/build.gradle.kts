@@ -1,9 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
-    //id("org.jetbrains.kotlin.plugin.serialization")
-//    id("kotlin-kapt")
 }
 
 android {
@@ -56,7 +55,6 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.camera:camera-core:1.2.3")
-   // implementation("androidx.room:room-ktx:2.5.2")
 
     val room_version = "2.5.2"
     implementation("androidx.room:room-runtime:$room_version")
