@@ -1,16 +1,16 @@
 package com.example.museumapp.room
 
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FavouriteItemDao {
+interface FavouriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavouriteItem(item: FavouriteItem)
 
@@ -20,6 +20,10 @@ interface FavouriteItemDao {
     @Delete
     suspend fun deleteFavouriteItem(item: FavouriteItem)
 
-    @Query("SELECT * FROM favourite_items")
-    fun getAllFavouriteItems(): Flow<List<FavouriteItem>>
+    @Query("SELECT * FROM FavouriteItem")
+    fun getAllFavouriteItems(): List<FavouriteItem>
+
+    @Query("SELECT * FROM FavouriteItem")
+    fun getAllFavouriteItemsLiveData(): LiveData<List<FavouriteItem>>
+
 }
