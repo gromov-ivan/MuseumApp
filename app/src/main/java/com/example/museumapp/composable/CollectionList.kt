@@ -17,9 +17,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
@@ -37,13 +37,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.museumapp.data.remote.dto.MuseumItem
 import com.example.museumapp.room.FavouriteItem
-import com.example.museumapp.viewModel.FavouriteItemViewModel
+import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 import java.net.URLEncoder
 
@@ -53,7 +52,7 @@ fun CollectionList(
     viewModel: MuseumViewModel,
     selectedCard: String,
     navController: NavHostController,
-    favouriteItemViewModel: FavouriteItemViewModel
+    favouriteViewModel: FavouriteViewModel
 ) {
 
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -121,6 +120,9 @@ fun CollectionList(
             }
         }
 
+        // Define a variable to track whether the item is a favorite
+        var isFavourite by remember { mutableStateOf(false) }
+
         LazyColumn {
             items(museumItems) { item ->
                 Card(
@@ -175,23 +177,49 @@ fun CollectionList(
                             IconButton(
                                 onClick = {
                                     // Handle favorite button click here
-                                          val favouriteItem = FavouriteItem(
-                                              itemId = item.id,
-                                              itemName = item.title
-                                          )
-                                    favouriteItemViewModel.insertFavouriteItem(favouriteItem)
+
+                                    isFavourite = !isFavourite
+
+                                    val favouriteItem = FavouriteItem(
+                                        id = item.id,
+                                        images = item.images,
+                                        imageDescription = item.imageDescription,
+                                        nonPresenterAuthorsName = item.nonPresenterAuthorsName,
+                                        title = item.title,
+                                        year = item.year
+                                    )
+
+                                    // Use your FavouriteViewModel to save or delete the FavouriteItem
+                                    if (isFavourite) {
+                                        favouriteViewModel.saveFavoriteItem(favouriteItem)
+                                        Log.d("DBG", "Marked item ${favouriteItem.id} as a favourite")
+                                    } else {
+                                        favouriteViewModel.deleteFavoriteItem(favouriteItem)
+                                        Log.d("DBG", "Removed item ${favouriteItem.id} from favourites")
+                                    }
                                 },
                                 modifier = Modifier
                                     .size(30.dp)
                                     .align(Alignment.TopEnd)
                             ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.FavoriteBorder,
-                                    contentDescription = "Favorite",
-                                    modifier = Modifier
-                                        .size(30.dp)
-                                        .padding(end = 5.dp)
-                                )
+                                if (isFavourite) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Favorite,
+                                        contentDescription = "Favorite",
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                            .padding(end = 5.dp)
+                                    )
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Outlined.FavoriteBorder,
+                                        contentDescription = "Favorite",
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                            .padding(end = 5.dp)
+                                    )
+                                }
+
                             }
                         }
                     }
