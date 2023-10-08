@@ -185,7 +185,7 @@ fun CollectionList(
                                         nonPresenterAuthorsName = item.nonPresenterAuthorsName,
                                         title = item.title,
                                         year = item.year,
-                                        isFavorite = !isFavouriteState.value
+                                        isFavourite = !isFavouriteState.value
                                     )
 
                                     if (isFavouriteState.value) {
