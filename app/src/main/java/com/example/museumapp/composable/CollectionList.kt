@@ -37,9 +37,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.museumapp.data.remote.dto.FavouriteMuseumItem
 import com.example.museumapp.data.remote.dto.MuseumItem
 import com.example.museumapp.room.FavouriteItem
 import com.example.museumapp.viewModel.FavouriteViewModel
@@ -51,7 +53,7 @@ fun CollectionList(
     museumItems: List<MuseumItem>,
     viewModel: MuseumViewModel,
     selectedCard: String,
-    navController: NavHostController,
+    navController: NavController,
     favouriteViewModel: FavouriteViewModel
 ) {
 
@@ -120,11 +122,10 @@ fun CollectionList(
             }
         }
 
-        // Define a variable to track whether the item is a favorite
-        var isFavourite by remember { mutableStateOf(false) }
-
         LazyColumn {
             items(museumItems) { item ->
+                val isFavouriteState = remember { mutableStateOf(favouriteViewModel.isFavourite(item.id)) }
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -161,7 +162,7 @@ fun CollectionList(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Column (
-                            modifier = Modifier.weight(0.7f), // Let the text occupy 70% of the available space
+                            modifier = Modifier.weight(0.7f),
                         ) {
                             Text(
                                 text = "${item.title}.",
@@ -176,9 +177,6 @@ fun CollectionList(
                         Box {
                             IconButton(
                                 onClick = {
-                                    // Handle favorite button click here
-
-                                    isFavourite = !isFavourite
 
                                     val favouriteItem = FavouriteItem(
                                         id = item.id,
@@ -186,40 +184,31 @@ fun CollectionList(
                                         imageDescription = item.imageDescription,
                                         nonPresenterAuthorsName = item.nonPresenterAuthorsName,
                                         title = item.title,
-                                        year = item.year
+                                        year = item.year,
+                                        isFavorite = !isFavouriteState.value
                                     )
 
-                                    // Use your FavouriteViewModel to save or delete the FavouriteItem
-                                    if (isFavourite) {
-                                        favouriteViewModel.saveFavoriteItem(favouriteItem)
-                                        Log.d("DBG", "Marked item ${favouriteItem.id} as a favourite")
-                                    } else {
+                                    if (isFavouriteState.value) {
                                         favouriteViewModel.deleteFavoriteItem(favouriteItem)
                                         Log.d("DBG", "Removed item ${favouriteItem.id} from favourites")
+                                    } else {
+                                        favouriteViewModel.saveFavoriteItem(favouriteItem)
+                                        Log.d("DBG", "Marked item ${favouriteItem.id} as a favourite")
                                     }
+                                    // Toggle the favorite state
+                                    isFavouriteState.value = !isFavouriteState.value
+
                                 },
                                 modifier = Modifier
                                     .size(30.dp)
                                     .align(Alignment.TopEnd)
                             ) {
-                                if (isFavourite) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Favorite,
-                                        contentDescription = "Favorite",
-                                        modifier = Modifier
-                                            .size(30.dp)
-                                            .padding(end = 5.dp)
-                                    )
-                                } else {
-                                    Icon(
-                                        imageVector = Icons.Outlined.FavoriteBorder,
-                                        contentDescription = "Favorite",
-                                        modifier = Modifier
-                                            .size(30.dp)
-                                            .padding(end = 5.dp)
-                                    )
-                                }
-
+                                 val icon = if (isFavouriteState.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = "Favorite",
+                                    modifier = Modifier.size(30.dp)
+                                )
                             }
                         }
                     }
