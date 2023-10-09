@@ -27,6 +27,9 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -65,7 +68,11 @@ fun CollectionList(
         "Photography Museum" -> listOf("Cities", "Agriculture")
         else -> emptyList()
     }
-
+    //val favouriteItems = remember { mutableStateListOf<FavouriteItem>() }
+    //val favoriteItemsList = favouriteViewModel.favoriteItemsList
+    val favouriteItems by favouriteViewModel.favouriteItems.observeAsState(emptyList())
+    // Initialize a map to store the isFavourite state for each item
+    val isFavouriteMap = remember { mutableStateMapOf<String, Boolean>() }
     Column {
         // Tab Row
         TabRow(
@@ -124,7 +131,25 @@ fun CollectionList(
 
         LazyColumn {
             items(museumItems) { item ->
-                val isFavouriteState = remember { mutableStateOf(favouriteViewModel.isFavourite(item.id)) }
+
+                val isFavouriteState = isFavouriteMap[item.id] ?: false
+
+                // Find the corresponding favorite item in the database and update isFavouriteState
+                favouriteItems.find { it.id == item.id }?.let { favouriteItem ->
+                    isFavouriteMap[item.id] = favouriteItem.isFavourite
+                }
+                //val isFavouriteState = remember { mutableStateOf(favouriteViewModel.isFavourite(item.id)) }
+                //val isFavouriteState = remember { mutableStateOf(favouriteItems.any { it.id == item.id }) }
+                //val isFavouriteState = remember { mutableStateOf(favouriteItems.any { it.id == item.id }) }
+                // Check if the current item is in the list of favorite items
+                //var isFavourite = remember { mutableStateOf(favoriteItemsList.any { it.id == item.id }) }
+
+                //val isFavouriteState = remember { mutableStateOf(false) }
+
+                // Find the corresponding favorite item in the database and set isFavouriteState accordingly
+                /*favouriteItems.find { it.id == item.id }?.let {
+                    isFavouriteState.value = it.isFavourite
+                }*/
 
                 Card(
                     modifier = Modifier
@@ -177,6 +202,10 @@ fun CollectionList(
                         Box {
                             IconButton(
                                 onClick = {
+                                    val newFavouriteState = !isFavouriteState
+                                    isFavouriteMap[item.id] = newFavouriteState
+
+                                    //isFavouriteState.value = !isFavouriteState.value
 
                                     val favouriteItem = FavouriteItem(
                                         id = item.id,
@@ -185,25 +214,25 @@ fun CollectionList(
                                         nonPresenterAuthorsName = item.nonPresenterAuthorsName,
                                         title = item.title,
                                         year = item.year,
-                                        isFavourite = !isFavouriteState.value
+                                        isFavourite = newFavouriteState
                                     )
 
-                                    if (isFavouriteState.value) {
-                                        favouriteViewModel.deleteFavoriteItem(favouriteItem)
-                                        Log.d("DBG", "Removed item ${favouriteItem.id} from favourites")
-                                    } else {
+                                    if (newFavouriteState) {
                                         favouriteViewModel.saveFavoriteItem(favouriteItem)
                                         Log.d("DBG", "Marked item ${favouriteItem.id} as a favourite")
+                                    } else {
+                                        favouriteViewModel.deleteFavoriteItem(favouriteItem)
+                                        Log.d("DBG", "Removed item ${favouriteItem.id} from favourites")
                                     }
-                                    // Toggle the favorite state
-                                    isFavouriteState.value = !isFavouriteState.value
+
+                                    favouriteViewModel.updateFavoriteItem(favouriteItem)
 
                                 },
                                 modifier = Modifier
                                     .size(30.dp)
                                     .align(Alignment.TopEnd)
                             ) {
-                                 val icon = if (isFavouriteState.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
+                                 val icon = if (isFavouriteState) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
                                 Icon(
                                     imageVector = icon,
                                     contentDescription = "Favorite",

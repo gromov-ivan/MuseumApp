@@ -23,6 +23,9 @@ interface FavouriteDao {
     @Query("SELECT * FROM FavouriteItem")
     fun getAllFavouriteItems(): List<FavouriteItem>
 
+    @Query("SELECT * FROM FavouriteItem WHERE id = :itemId AND isFavourite = 1")
+    fun isItemFavourite(itemId: String): Boolean
+
     @Query("SELECT * FROM FavouriteItem")
     fun getAllFavouriteItemsLiveData(): LiveData<List<FavouriteItem>>
 
