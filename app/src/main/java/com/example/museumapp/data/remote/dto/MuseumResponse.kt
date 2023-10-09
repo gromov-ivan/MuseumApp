@@ -15,8 +15,3 @@ data class MuseumItem(
     val title: String,
     val year: String
 )
-
-data class FavouriteMuseumItem(
-    val museumItem: MuseumItem,
-    val isFavourite: Boolean = false
-)
