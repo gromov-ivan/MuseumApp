@@ -31,7 +31,10 @@ import androidx.compose.ui.draw.clip
 import kotlinx.coroutines.launch
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalConfiguration
 import com.example.museumapp.R
+import androidx.compose.runtime.remember
+import android.content.res.Configuration
 
 
 @ExperimentalFoundationApi
@@ -70,19 +73,22 @@ fun FavouriteAnimatedView() {
 
     val scope = rememberCoroutineScope()
 
+    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
         val backgroundImage = painterResource(id = R.drawable.museum)
+        val backgroundImageRotate = painterResource(id = R.drawable.museumrotate)
 
         Image(
-            painter = backgroundImage,
+            painter = if (isLandscape) backgroundImageRotate else backgroundImage,
             contentDescription = null,
-            contentScale = ContentScale.Fit, // Fit the image within the Box
+            contentScale = ContentScale.Fit,
             modifier = Modifier
-                .scale(2.3f) // Scale the image by 2.3
+                .scale(if (isLandscape) 4.8f else 2.3f)
                 .offset(offsetX, offsetY)
         )
         Box(
@@ -102,7 +108,6 @@ fun FavouriteAnimatedView() {
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(40.dp)
-
                 )
             }
             Box(
