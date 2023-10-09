@@ -2,8 +2,6 @@ package com.example.museumapp.composable
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,23 +20,31 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.museumapp.room.FavouriteItem
+import com.example.museumapp.viewModel.FavouriteViewModel
 
 @Composable
 fun FavouriteItemCard(
-    favouriteItem: FavouriteItem
+    favouriteItem: FavouriteItem,
+    //isFavourite: Boolean,
+    onFavouriteStateChanged: (Boolean) -> Unit,
+    favouriteViewModel: FavouriteViewModel
 ) {
+    // Initialize isFavourite state based on the item's initial state in the database
+    val isFavourite by remember { mutableStateOf(favouriteItem.isFavourite) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -82,7 +88,31 @@ fun FavouriteItemCard(
             }
             Spacer(modifier = Modifier.width(16.dp))
             // Add a favorite icon button
+            IconButton(
+                onClick = {
+                    val newFavouriteState = !isFavourite
+                    onFavouriteStateChanged(newFavouriteState)
 
+                    // Update the favorite state in the database
+                    val updatedFavouriteItem = favouriteItem.copy(isFavourite = newFavouriteState)
+                    if (newFavouriteState) {
+                        favouriteViewModel.saveFavoriteItem(updatedFavouriteItem)
+                        Log.d("DBG", "Marked item ${updatedFavouriteItem.id} as a favourite")
+                    } else {
+                        favouriteViewModel.deleteFavoriteItem(updatedFavouriteItem)
+                        Log.d("DBG", "Removed item ${updatedFavouriteItem.id} from favourites")
+                    }
+                },
+                modifier = Modifier
+                    .size(30.dp)
+            ) {
+                val icon = if (isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "Favorite",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
         }
     }
 }
