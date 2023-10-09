@@ -27,10 +27,8 @@ import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
-import com.example.museumapp.room.FavouriteItem
 import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
-import java.net.URLEncoder
 
 @Composable
 fun NavigationController(
@@ -55,8 +53,6 @@ fun NavigationController(
 
         composable("collectionList") {
             val museumData by viewModel.museumData.observeAsState(emptyList())
-
-
             CollectionList(museumData, viewModel, selectedCard.value, navController, favouriteViewModel)
         }
 
@@ -81,7 +77,7 @@ fun NavigationController(
         }
 
         composable(NavigationItem.Favourite.route) {
-            FavouritesView()
+            FavouritesView(favouriteViewModel)
         }
     }
 }
