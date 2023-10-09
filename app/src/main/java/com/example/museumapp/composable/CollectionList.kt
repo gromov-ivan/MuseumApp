@@ -17,16 +17,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,6 +44,8 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.museumapp.data.remote.dto.MuseumItem
+import com.example.museumapp.room.FavouriteItem
+import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 import java.net.URLEncoder
 
@@ -49,8 +54,9 @@ fun CollectionList(
     museumItems: List<MuseumItem>,
     viewModel: MuseumViewModel,
     selectedCard: String,
-    navController: NavController
-    ) {
+    navController: NavController,
+    favouriteViewModel: FavouriteViewModel
+) {
 
     var selectedTabIndex by remember { mutableStateOf(0) }
 
@@ -117,8 +123,24 @@ fun CollectionList(
             }
         }
 
+        // Observe changes in the list of favorite items from the ViewModel
+        val favouriteItems by favouriteViewModel.favouriteItems.observeAsState(emptyList())
+
+        // Initialize a map to store the isFavourite state for each item
+        val isFavouriteMap = remember { mutableStateMapOf<String, Boolean>() }
+
+        // Update the isFavouriteMap whenever favouriteItems changes
+        LaunchedEffect(favouriteItems) {
+            favouriteItems.forEach { favouriteItem ->
+                isFavouriteMap[favouriteItem.id] = favouriteItem.isFavourite
+            }
+        }
+
         LazyColumn {
             items(museumItems) { item ->
+
+                val isFavouriteState = isFavouriteMap[item.id] ?: false
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -155,7 +177,7 @@ fun CollectionList(
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Column (
-                            modifier = Modifier.weight(0.7f), // Let the text occupy 70% of the available space
+                            modifier = Modifier.weight(0.7f),
                         ) {
                             Text(
                                 text = "${item.title}.",
@@ -170,18 +192,39 @@ fun CollectionList(
                         Box {
                             IconButton(
                                 onClick = {
-                                    // Handle favorite button click here
+                                    val newFavouriteState = !isFavouriteState
+                                    isFavouriteMap[item.id] = newFavouriteState
+
+                                    val favouriteItem = FavouriteItem(
+                                        id = item.id,
+                                        images = item.images,
+                                        imageDescription = item.imageDescription,
+                                        nonPresenterAuthorsName = item.nonPresenterAuthorsName,
+                                        title = item.title,
+                                        year = item.year,
+                                        isFavourite = newFavouriteState
+                                    )
+
+                                    if (newFavouriteState) {
+                                        favouriteViewModel.saveFavoriteItem(favouriteItem)
+                                        Log.d("DBG", "Marked item ${favouriteItem.id} as a favourite")
+                                    } else {
+                                        favouriteViewModel.deleteFavoriteItem(favouriteItem)
+                                        Log.d("DBG", "Removed item ${favouriteItem.id} from favourites")
+                                    }
+
+                                    favouriteViewModel.updateFavoriteItem(favouriteItem)
+
                                 },
                                 modifier = Modifier
                                     .size(30.dp)
                                     .align(Alignment.TopEnd)
                             ) {
+                                 val icon = if (isFavouriteState) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
                                 Icon(
-                                    imageVector = Icons.Outlined.FavoriteBorder,
+                                    imageVector = icon,
                                     contentDescription = "Favorite",
-                                    modifier = Modifier
-                                        .size(30.dp)
-                                        .padding(end = 5.dp)
+                                    modifier = Modifier.size(30.dp)
                                 )
                             }
                         }

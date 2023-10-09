@@ -27,12 +27,14 @@ import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
+import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 
 @Composable
 fun NavigationController(
     navController: NavHostController,
-    viewModel: MuseumViewModel
+    viewModel: MuseumViewModel,
+    favouriteViewModel: FavouriteViewModel
     ) {
 
     val selectedCard = remember { mutableStateOf("") }
@@ -51,7 +53,7 @@ fun NavigationController(
 
         composable("collectionList") {
             val museumData by viewModel.museumData.observeAsState(emptyList())
-            CollectionList(museumData, viewModel, selectedCard.value, navController)
+            CollectionList(museumData, viewModel, selectedCard.value, navController, favouriteViewModel)
         }
 
         composable("collectionDetailView/{itemId}") {backStackEntry ->
@@ -75,13 +77,13 @@ fun NavigationController(
         }
 
         composable(NavigationItem.Favourite.route) {
-            FavouritesView()
+            FavouritesView(favouriteViewModel)
         }
     }
 }
 
 @Composable
-fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
+fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewModel) {
 
     val navController = rememberNavController()
 
@@ -134,7 +136,7 @@ fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            NavigationController(navController = navController, viewModel = viewModel)
+            NavigationController(navController = navController, viewModel = viewModel, favouriteViewModel = favouriteViewModel)
         }
     }
 }

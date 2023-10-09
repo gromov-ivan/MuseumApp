@@ -15,4 +15,3 @@ data class MuseumItem(
     val title: String,
     val year: String
 )
-
