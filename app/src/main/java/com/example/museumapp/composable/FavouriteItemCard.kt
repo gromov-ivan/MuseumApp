@@ -38,8 +38,6 @@ import com.example.museumapp.viewModel.FavouriteViewModel
 @Composable
 fun FavouriteItemCard(
     favouriteItem: FavouriteItem,
-    //isFavourite: Boolean,
-    onFavouriteStateChanged: (Boolean) -> Unit,
     favouriteViewModel: FavouriteViewModel
 ) {
     // Initialize isFavourite state based on the item's initial state in the database
@@ -75,7 +73,7 @@ fun FavouriteItemCard(
 
             Spacer(modifier = Modifier.height(10.dp))
             Column (
-                modifier = Modifier.weight(0.7f), // Let the text occupy 70% of the available space
+                modifier = Modifier.weight(0.7f),
             ) {
                 Text(
                     text = "${favouriteItem.title}.",
@@ -91,7 +89,6 @@ fun FavouriteItemCard(
             IconButton(
                 onClick = {
                     val newFavouriteState = !isFavourite
-                    onFavouriteStateChanged(newFavouriteState)
 
                     // Update the favorite state in the database
                     val updatedFavouriteItem = favouriteItem.copy(isFavourite = newFavouriteState)

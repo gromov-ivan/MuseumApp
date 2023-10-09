@@ -28,16 +28,9 @@ import com.example.museumapp.viewModel.FavouriteViewModel
 @Composable
 fun FavouritesView(favouriteViewModel: FavouriteViewModel){
     val navController = rememberNavController()
-    //val favouriteViewModel: FavouriteViewModel = viewModel()
-
-    //Observe the LiveData
-    //val favouriteItems = favouriteViewModel.getAllFavourites().observeAsState()
 
     // Observe the LiveData
     val favouriteItems by favouriteViewModel.getAllFavourites().observeAsState(emptyList())
-
-    // Initialize a map to store the isFavourite state for each favorite item
-    val isFavouriteMap = remember { mutableStateMapOf<String, Boolean>() }
 
     NavHost(navController, startDestination = "Home") {
         composable("Home") {
@@ -57,33 +50,10 @@ fun FavouritesView(favouriteViewModel: FavouriteViewModel){
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(16.dp)
                 ) {
-                    /*items(favouriteItems.value ?: emptyList()) { favouriteItem ->
-                        FavouriteItemCard(
-                            favouriteItem = favouriteItem,
-                        )
-                    }*/
                     items(favouriteItems) { favouriteItem ->
-                        val isFavouriteState = isFavouriteMap[favouriteItem.id] ?: false
-
                         FavouriteItemCard(
                             favouriteItem = favouriteItem,
-                            //isFavourite = isFavouriteState,
-                            onFavouriteStateChanged = { newFavouriteState ->
-                                // Update the isFavouriteMap
-                                isFavouriteMap[favouriteItem.id] = newFavouriteState
-
-                                // Update the favorite state in the database using the ViewModel
-                                val updatedFavouriteItem = favouriteItem.copy(isFavourite = newFavouriteState)
-                                if (newFavouriteState) {
-                                    favouriteViewModel.saveFavoriteItem(updatedFavouriteItem)
-                                    Log.d("DBG", "Marked item ${updatedFavouriteItem.id} as a favourite")
-                                } else {
-                                    favouriteViewModel.deleteFavoriteItem(updatedFavouriteItem)
-                                    Log.d("DBG", "Removed item ${updatedFavouriteItem.id} from favourites")
-                                }
-                            },
                             favouriteViewModel = favouriteViewModel
-
                         )
                     }
                 }
