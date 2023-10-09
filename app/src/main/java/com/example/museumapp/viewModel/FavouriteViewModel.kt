@@ -25,6 +25,7 @@ class FavouriteViewModel(application: Application): AndroidViewModel(application
     // Function to delete a favorite item
     fun deleteFavoriteItem(favouriteItem: FavouriteItem) {
         viewModelScope.launch {
+            favouriteItem.isFavourite = false
             favouriteDao.deleteFavouriteItem(favouriteItem)
         }
     }

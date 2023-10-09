@@ -26,6 +26,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateMapOf
@@ -65,12 +66,6 @@ fun CollectionList(
         "Photography Museum" -> listOf("Cities", "Agriculture")
         else -> emptyList()
     }
-
-    // Observe changes in the list of favorite items from the ViewModel
-    val favouriteItems by favouriteViewModel.favouriteItems.observeAsState(emptyList())
-
-    // Initialize a map to store the isFavourite state for each item
-    val isFavouriteMap = remember { mutableStateMapOf<String, Boolean>() }
 
     Column {
         // Tab Row
@@ -128,15 +123,23 @@ fun CollectionList(
             }
         }
 
+        // Observe changes in the list of favorite items from the ViewModel
+        val favouriteItems by favouriteViewModel.favouriteItems.observeAsState(emptyList())
+
+        // Initialize a map to store the isFavourite state for each item
+        val isFavouriteMap = remember { mutableStateMapOf<String, Boolean>() }
+
+        // Update the isFavouriteMap whenever favouriteItems changes
+        LaunchedEffect(favouriteItems) {
+            favouriteItems.forEach { favouriteItem ->
+                isFavouriteMap[favouriteItem.id] = favouriteItem.isFavourite
+            }
+        }
+
         LazyColumn {
             items(museumItems) { item ->
 
                 val isFavouriteState = isFavouriteMap[item.id] ?: false
-
-                // Find the corresponding favorite item in the database and update isFavouriteState
-                favouriteItems.find { it.id == item.id }?.let { favouriteItem ->
-                    isFavouriteMap[item.id] = favouriteItem.isFavourite
-                }
 
                 Card(
                     modifier = Modifier
