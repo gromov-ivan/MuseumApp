@@ -53,6 +53,7 @@ fun FavouritesView(favouriteViewModel: FavouriteViewModel){
                     items(favouriteItems) { favouriteItem ->
                         FavouriteItemCard(
                             favouriteItem = favouriteItem,
+                            navController = navController,
                             favouriteViewModel = favouriteViewModel
                         )
                     }

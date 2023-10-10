@@ -10,7 +10,7 @@ import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logging
 
 interface MuseumService {
-    //suspend fun getRecords(): List<MuseumRecord>
+
     suspend fun getTuusulaDrawings(): List<MuseumItem>
     suspend fun getTuusulaPitures(): List<MuseumItem>
 

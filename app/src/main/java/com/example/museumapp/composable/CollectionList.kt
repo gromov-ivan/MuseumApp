@@ -150,9 +150,7 @@ fun CollectionList(
                             // encode item.id to use the value in the navigation route
                             val encodedItemId = URLEncoder.encode(item.id, "UTF-8")
                             navController.navigate("collectionDetailView/${encodedItemId}")
-                        },
-
-
+                        }
                 ) {
                     Row(
                         modifier = Modifier

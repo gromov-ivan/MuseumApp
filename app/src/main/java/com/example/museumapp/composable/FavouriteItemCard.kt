@@ -2,6 +2,7 @@ package com.example.museumapp.composable
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,14 +31,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.museumapp.room.FavouriteItem
 import com.example.museumapp.viewModel.FavouriteViewModel
+import java.net.URLEncoder
 
 @Composable
 fun FavouriteItemCard(
     favouriteItem: FavouriteItem,
+    navController: NavController,
     favouriteViewModel: FavouriteViewModel
 ) {
     // Initialize isFavourite state based on the item's initial state in the database
@@ -47,6 +51,12 @@ fun FavouriteItemCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(7.dp)
+            .clickable {
+                Log.d("MyApp", "Navigating to favouriteDetailView/${favouriteItem.id}")
+                // encode item.id to use the value in the navigation route
+                val encodedItemId = URLEncoder.encode(favouriteItem.id, "UTF-8")
+                navController.navigate("favouriteDetailView/${encodedItemId}")
+            }
     ) {
         Row(
             modifier = Modifier
