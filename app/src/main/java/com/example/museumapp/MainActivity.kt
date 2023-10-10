@@ -9,13 +9,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.util.ShakeDetector
 import com.example.museumapp.ui.theme.MuseumAppTheme
 import com.example.museumapp.viewModel.MuseumViewModel
 import com.example.museumapp.composable.FeedbackBottomSheet
 import com.example.museumapp.navigation.Navigation
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
 
@@ -31,15 +35,25 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppContent(viewModel)
+
+            val systemUiController = rememberSystemUiController()
+            val useDarkIcons = !isSystemInDarkTheme()
+
+            SideEffect {
+                systemUiController.setStatusBarColor(
+                    color = Color(0xFFFFFBFE),
+                    darkIcons = useDarkIcons,
+                )
+            }
         }
     }
 
     @Composable
     fun AppContent(viewModel: MuseumViewModel) {
-        val navController = rememberNavController()
+        rememberNavController()
 
         MuseumAppTheme {
-            Navigation(viewModel, navController)
+            Navigation(viewModel)
 
             FeedbackBottomSheet(
                 shakeDetector = mShakeDetector,

@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -81,7 +83,7 @@ fun NavigationController(
 }
 
 @Composable
-fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
+fun Navigation(viewModel: MuseumViewModel) {
 
     val navController = rememberNavController()
 
@@ -93,8 +95,10 @@ fun Navigation(viewModel: MuseumViewModel, navController: NavHostController) {
 
     Scaffold(
         bottomBar = {
-            BottomNavigation {
-
+            BottomNavigation(
+                backgroundColor = MaterialTheme.colorScheme.secondary,
+                )
+            {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 

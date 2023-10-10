@@ -119,4 +119,7 @@ dependencies {
 
     // for material3 ModalBottomSheet
     implementation("androidx.compose.material3:material3:1.1.2")
+
+    // System UI Controller for Jetpack Compose
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.1-alpha")
 }
