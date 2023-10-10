@@ -80,7 +80,7 @@ fun FavouriteItemCard(
                 alignment = Alignment.Center,
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.width(10.dp))
             Column (
                 modifier = Modifier.weight(0.7f),
             ) {
