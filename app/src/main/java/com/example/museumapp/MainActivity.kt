@@ -8,22 +8,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import com.example.museumapp.util.ShakeDetector
-import com.example.museumapp.navigation.Navigation
-import com.example.museumapp.ui.theme.MuseumAppTheme
-import com.example.museumapp.viewModel.MuseumViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.composable.CollectionList
+
+import com.example.museumapp.navigation.Navigation
+
 import com.example.museumapp.navigation.NavigationItem
-import com.example.museumapp.viewModel.FavouriteItemViewModel
+import com.example.museumapp.ui.theme.MuseumAppTheme
+import com.example.museumapp.util.ShakeDetector
+import com.example.museumapp.viewModel.FavouriteViewModel
+import com.example.museumapp.viewModel.MuseumViewModel
 
 class MainActivity : ComponentActivity() {
 
-    //    private val viewModel by viewModels<MuseumViewModel>()
-//    private lateinit var museumDatabase: MuseumDatabase
-//    private lateinit var museumViewModel: MuseumViewModel
     private val museumViewModel by viewModels<MuseumViewModel>()
-    private val favouriteItemViewModel by viewModels<FavouriteItemViewModel>()
+    private val favouriteViewModel by viewModels<FavouriteViewModel>()
     private var mSensorManager: SensorManager? = null
     private var mShakeDetector: ShakeDetector? = null
 
@@ -33,12 +32,8 @@ class MainActivity : ComponentActivity() {
         mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mShakeDetector = ShakeDetector()
 
-//        museumViewModel = ViewModelProvider(this).get(MuseumViewModel::class.java)
-//        favouriteItemViewModel = ViewModelProvider(this).get(FavouriteItemViewModel::class.java)
-
         setContent {
-            AppContent(museumViewModel, mShakeDetector, favouriteItemViewModel)
-
+            AppContent(museumViewModel, mShakeDetector, favouriteViewModel )
         }
     }
 
@@ -46,7 +41,7 @@ class MainActivity : ComponentActivity() {
     fun AppContent(
         viewModel: MuseumViewModel,
         shakeDetector: ShakeDetector?,
-        favouriteItemViewModel: FavouriteItemViewModel
+        favouriteViewModel: FavouriteViewModel
     ) {
         val navController = rememberNavController()
 
@@ -55,13 +50,13 @@ class MainActivity : ComponentActivity() {
         }
 
         MuseumAppTheme {
-            Navigation(viewModel)
+            Navigation(viewModel,favouriteViewModel)
             CollectionList(
-                museumItems = emptyList(),
+            museumItems = emptyList(),
             viewModel = viewModel,
             selectedCard = toString(),
             navController= navController,
-            favouriteItemViewModel = favouriteItemViewModel
+            favouriteViewModel = favouriteViewModel,
             )
         }
     }

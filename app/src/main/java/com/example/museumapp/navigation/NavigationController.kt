@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,13 +27,14 @@ import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
-import com.example.museumapp.viewModel.FavouriteItemViewModel
+import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 
 @Composable
 fun NavigationController(
     navController: NavHostController,
-    museumViewModel: MuseumViewModel
+    viewModel: MuseumViewModel,
+    favouriteViewModel: FavouriteViewModel
     ) {
 
     val selectedCard = remember { mutableStateOf("") }
@@ -46,27 +46,26 @@ fun NavigationController(
         }
 
         composable("collectionsCard") {
-            CollectionsCard(navController, museumViewModel){ cardType ->
+            CollectionsCard(navController, viewModel){ cardType ->
                 selectedCard.value = cardType
             }
         }
 
         composable("collectionList") {
-            val museumData by museumViewModel.museumData.observeAsState(emptyList())
-            val favouriteItemViewModel = viewModel<FavouriteItemViewModel>()
-            CollectionList(museumData, museumViewModel, selectedCard.value, navController, favouriteItemViewModel)
+            val museumData by viewModel.museumData.observeAsState(emptyList())
+            CollectionList(museumData, viewModel, selectedCard.value, navController, favouriteViewModel)
         }
 
         composable("collectionDetailView/{itemId}") {backStackEntry ->
             // Extract the item ID from the navigation arguments
             val itemId = backStackEntry.arguments?.getString("itemId")
-            val museumData by museumViewModel.museumData.observeAsState(emptyList())
+            val museumData by viewModel.museumData.observeAsState(emptyList())
             // Retrieve the corresponding MuseumItem based on the item ID
             val selectedItem = museumData.find { it.id == itemId }
 
             if (selectedItem != null) {
                 // Pass the selected item to the CollectionDetailView composable
-                CollectionDetailView(selectedItem, museumViewModel)
+                CollectionDetailView(selectedItem)
             } else {
                 // Handle the case where the item is not found
                 Text(text = "Item not found", fontSize = 20.sp)
@@ -78,13 +77,13 @@ fun NavigationController(
         }
 
         composable(NavigationItem.Favourite.route) {
-            FavouritesView()
+            FavouritesView(favouriteViewModel)
         }
     }
 }
 
 @Composable
-fun Navigation(museumViewModel: MuseumViewModel) {
+fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewModel) {
 
     val navController = rememberNavController()
 
@@ -137,7 +136,7 @@ fun Navigation(museumViewModel: MuseumViewModel) {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            NavigationController(navController = navController, museumViewModel = MuseumViewModel())
+            NavigationController(navController = navController, viewModel = viewModel, favouriteViewModel = favouriteViewModel)
         }
     }
 }

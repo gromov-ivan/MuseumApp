@@ -13,8 +13,5 @@ data class MuseumItem(
     val role: String,
     val subjects: List<List<String>>,
     val title: String,
-    val year: String,
-    val name: String
-
+    val year: String
 )
-
