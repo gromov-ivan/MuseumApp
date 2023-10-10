@@ -60,7 +60,7 @@ fun FavouritesView(favouriteViewModel: FavouriteViewModel){
             }
         }
         composable("FavouriteAnimatedView") {
-            FavouriteAnimatedView()
+            FavouriteAnimatedView(favouriteItems = favouriteItems)
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.museumapp.composable
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -35,11 +36,24 @@ import androidx.compose.ui.platform.LocalConfiguration
 import com.example.museumapp.R
 import androidx.compose.runtime.remember
 import android.content.res.Configuration
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.example.museumapp.room.FavouriteItem
+import com.example.museumapp.viewModel.FavouriteViewModel
+import kotlinx.coroutines.delay
 
 
+@SuppressLint("SuspiciousIndentation")
 @ExperimentalFoundationApi
 @Composable
-fun FavouriteAnimatedView() {
+fun FavouriteAnimatedView(favouriteItems: List<FavouriteItem>) {
+    val pagerState = rememberPagerState(
+        pageCount = { favouriteItems.size},
+        initialPage = 0
+    )
+
+//    ) {
     val infiniteTransition = rememberInfiniteTransition()
     val angle by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -49,6 +63,7 @@ fun FavouriteAnimatedView() {
             repeatMode = RepeatMode.Restart
         )
     )
+
 
     val radius = 8.dp // Adjust the radius of the circular path
 
@@ -60,20 +75,30 @@ fun FavouriteAnimatedView() {
         (radius.value * sin(Math.toRadians(angle.toDouble()))).dp
     }
 
-    val animals = listOf(
-        R.drawable.flower,
-        R.drawable.girl,
-        R.drawable.sitgirl
-    )
+//    val animals = listOf(
+//        R.drawable.flower,
+//        R.drawable.girl,
+//        R.drawable.sitgirl
+//    )
 
-    val pagerState = rememberPagerState(
-        pageCount = { animals.size },
-        initialPage = 0
-    )
+//    val pagerState = rememberPagerState(
+//        pageCount = { animals.size },
+//        initialPage = 0
+//    )
 
     val scope = rememberCoroutineScope()
 
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+    LaunchedEffect(pagerState) {
+        while (true) {
+            val nextPage = (pagerState.currentPage + 1) % favouriteItems.size
+
+                pagerState.scrollToPage(nextPage)
+
+            // Adjust the delay duration as needed
+            delay(3000) // Scroll to the next item every 3 seconds
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -101,8 +126,17 @@ fun FavouriteAnimatedView() {
                 modifier = Modifier
                     .fillMaxSize()
             ) {page ->
+                val favouriteItem = favouriteItems[page]
+                val painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(data = favouriteItem.images)
+                        .apply {
+                            crossfade(true)
+                        }
+                        .build()
+                )
                 Image(
-                    painter = painterResource(id = animals[page]),
+                    painter = painter,
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
@@ -124,6 +158,7 @@ fun FavouriteAnimatedView() {
                                 pagerState.currentPage - 1
                             )
                         }
+//                        pagerState.scrollToPage(pagerState.currentPage - 1)
                     },
                     modifier = Modifier.align(Alignment.CenterStart)
                         .clip(RoundedCornerShape(100))
@@ -141,6 +176,7 @@ fun FavouriteAnimatedView() {
                                 pagerState.currentPage + 1
                             )
                         }
+//                        pagerState.scrollToPage(pagerState.currentPage + 1)
                     },
                     modifier = Modifier.align(Alignment.CenterEnd)
                         .clip(RoundedCornerShape(100))
