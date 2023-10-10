@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.composable.CollectionList
@@ -17,6 +18,7 @@ import com.example.museumapp.util.ShakeDetector
 import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 
+@ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
 
     private val museumViewModel by viewModels<MuseumViewModel>()
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
+    @ExperimentalMaterial3Api
     fun AppContent(
         viewModel: MuseumViewModel,
         shakeDetector: ShakeDetector?,
