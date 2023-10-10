@@ -117,7 +117,7 @@ fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewMode
                         onClick = {
                             if(!isSelected){
 
-                                navController.graph?.startDestinationRoute?.let {
+                                navController.graph.startDestinationRoute?.let {
                                     navController.popBackStack(it,true)
                                 }
 
