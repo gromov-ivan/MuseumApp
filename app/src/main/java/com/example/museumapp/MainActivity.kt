@@ -14,7 +14,6 @@ import com.example.museumapp.ui.theme.MuseumAppTheme
 import com.example.museumapp.viewModel.MuseumViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.composable.CollectionList
-import com.example.museumapp.data.remote.dto.MuseumItem
 import com.example.museumapp.navigation.NavigationItem
 import com.example.museumapp.viewModel.FavouriteItemViewModel
 

@@ -57,7 +57,6 @@ fun CollectionDetailView(
                 crossfade(true)
             }).build()
     )
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +93,11 @@ fun CollectionDetailView(
                     .padding(start = 30.dp, top = 2.dp, end = 20.dp, bottom = 10.dp)
             )
 
-            Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist."}",
+            Text(
+                text = "Artist: ${
+                    selectedItem.nonPresenterAuthorsName.trim()
+                        .takeIf { it.isNotEmpty() } ?: "Unknown artist."
+                }",
 
                 fontSize = 18.sp,
                 modifier = Modifier
@@ -109,12 +112,12 @@ fun CollectionDetailView(
 
             IconButton(
                 onClick = {
-                    favouriteItemViewModel?.let { viewModel->
-                    val favouriteItem = FavouriteItem(
-                        itemId = selectedItem.id,
-                        itemName = selectedItem.name
-                    )
-                    viewModel.insertFavouriteItem(favouriteItem)
+                    favouriteItemViewModel?.let { viewModel ->
+                        val favouriteItem = FavouriteItem(
+                            itemId = selectedItem.id,
+                            itemName = selectedItem.name
+                        )
+                        viewModel.insertFavouriteItem(favouriteItem)
 
 //                        SnackbarHostState(scope = rememberCoroutineScope()).showSnackbar(
 //                            message = "Added to favorites",
@@ -125,15 +128,11 @@ fun CollectionDetailView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
-
             ) {
                 Text(text = "Add to favourites", color = Color.White)
             }
-
-
         }
     }
-
 }
 
 
