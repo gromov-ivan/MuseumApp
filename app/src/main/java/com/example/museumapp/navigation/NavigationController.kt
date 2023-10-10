@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,12 +27,14 @@ import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
+import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 
 @Composable
 fun NavigationController(
     navController: NavHostController,
-    viewModel: MuseumViewModel
+    viewModel: MuseumViewModel,
+    favouriteViewModel: FavouriteViewModel
     ) {
 
     val selectedCard = remember { mutableStateOf("") }
@@ -53,7 +53,7 @@ fun NavigationController(
 
         composable("collectionList") {
             val museumData by viewModel.museumData.observeAsState(emptyList())
-            CollectionList(museumData, viewModel, selectedCard.value, navController)
+            CollectionList(museumData, viewModel, selectedCard.value, navController, favouriteViewModel)
         }
 
         composable("collectionDetailView/{itemId}") {backStackEntry ->
@@ -77,13 +77,13 @@ fun NavigationController(
         }
 
         composable(NavigationItem.Favourite.route) {
-            FavouritesView()
+            FavouritesView(favouriteViewModel)
         }
     }
 }
 
 @Composable
-fun Navigation(viewModel: MuseumViewModel) {
+fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewModel) {
 
     val navController = rememberNavController()
 
@@ -95,10 +95,8 @@ fun Navigation(viewModel: MuseumViewModel) {
 
     Scaffold(
         bottomBar = {
-            BottomNavigation(
-                backgroundColor = MaterialTheme.colorScheme.secondary,
-                )
-            {
+            BottomNavigation {
+
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
@@ -119,7 +117,7 @@ fun Navigation(viewModel: MuseumViewModel) {
                         onClick = {
                             if(!isSelected){
 
-                                navController.graph?.startDestinationRoute?.let {
+                                navController.graph.startDestinationRoute?.let {
                                     navController.popBackStack(it,true)
                                 }
 
@@ -138,7 +136,7 @@ fun Navigation(viewModel: MuseumViewModel) {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            NavigationController(navController = navController, viewModel = viewModel)
+            NavigationController(navController = navController, viewModel = viewModel, favouriteViewModel = favouriteViewModel)
         }
     }
 }

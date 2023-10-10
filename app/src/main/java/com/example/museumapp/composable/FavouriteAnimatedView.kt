@@ -31,12 +31,20 @@ import androidx.compose.ui.draw.clip
 import kotlinx.coroutines.launch
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalConfiguration
 import com.example.museumapp.R
+import androidx.compose.runtime.remember
+import android.content.res.Configuration
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import com.example.museumapp.viewModel.FavouriteViewModel
 
 
 @ExperimentalFoundationApi
 @Composable
-fun FavouriteAnimatedView() {
+fun FavouriteAnimatedView(favouriteViewModel: FavouriteViewModel) {
     val infiniteTransition = rememberInfiniteTransition()
     val angle by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -57,18 +65,17 @@ fun FavouriteAnimatedView() {
         (radius.value * sin(Math.toRadians(angle.toDouble()))).dp
     }
 
-    val animals = listOf(
-        R.drawable.flower,
-        R.drawable.girl,
-        R.drawable.sitgirl
-    )
+    // Observe the LiveData
+    val favouriteItems by favouriteViewModel.getAllFavourites().observeAsState(emptyList())
 
     val pagerState = rememberPagerState(
-        pageCount = { animals.size },
+        pageCount = { favouriteItems.size },
         initialPage = 0
     )
 
     val scope = rememberCoroutineScope()
+
+    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Box(
         modifier = Modifier
@@ -76,13 +83,14 @@ fun FavouriteAnimatedView() {
             .background(Color.White)
     ) {
         val backgroundImage = painterResource(id = R.drawable.museum)
+        val backgroundImageRotate = painterResource(id = R.drawable.museumrotate)
 
         Image(
-            painter = backgroundImage,
+            painter = if (isLandscape) backgroundImageRotate else backgroundImage,
             contentDescription = null,
-            contentScale = ContentScale.Fit, // Fit the image within the Box
+            contentScale = ContentScale.Fit,
             modifier = Modifier
-                .scale(2.3f) // Scale the image by 2.3
+                .scale(if (isLandscape) 4.8f else 2.3f)
                 .offset(offsetX, offsetY)
         )
         Box(
@@ -95,14 +103,21 @@ fun FavouriteAnimatedView() {
                 modifier = Modifier
                     .fillMaxSize()
             ) {page ->
+
+                val painter = rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current)
+                        .data(data = favouriteItems[page].images)
+                        .apply(block = fun ImageRequest.Builder.() {
+                            crossfade(true)
+                        }).build()
+                )
                 Image(
-                    painter = painterResource(id = animals[page]),
+                    painter = painter,
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(40.dp)
-
                 )
             }
             Box(
