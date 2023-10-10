@@ -12,6 +12,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -21,48 +23,56 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.museumapp.room.FavouriteItem
+import com.example.museumapp.viewModel.FavouriteViewModel
 
 @Composable
-fun FavouriteDetailView(selectedItem: FavouriteItem) {
+fun FavouriteDetailView(itemId: String, favouriteViewModel: FavouriteViewModel) {
 
-    val painter = rememberAsyncImagePainter(
-        ImageRequest.Builder(LocalContext.current)
-            .data(data = selectedItem.images).apply(block = fun ImageRequest.Builder.() {
-                crossfade(true)
-            }).build()
-    )
+    val favouriteData by favouriteViewModel.favouriteItems.observeAsState(emptyList())
+    // Retrieve the corresponding MuseumItem based on the item ID
+    val selectedItem = favouriteData.find { it.id == itemId }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+    if (selectedItem != null) {
+        val painter = rememberAsyncImagePainter(
+            ImageRequest.Builder(LocalContext.current)
+                .data(data = selectedItem.images).apply(block = fun ImageRequest.Builder.() {
+                    crossfade(true)
+                }).build()
+        )
+
+        Box(
+            modifier = Modifier.fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .scale(0.8f),
-                contentScale = ContentScale.Crop,
-                alignment = Alignment.TopStart,
-            )
-            Text(text = "${selectedItem.title}, ${selectedItem.year}.",
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .padding(start = 30.dp, top = 2.dp, end = 20.dp, bottom = 10.dp))
-            Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist."}",
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .padding(start = 30.dp, top = 2.dp, end = 30.dp, bottom = 10.dp))
-            Text(text = "${selectedItem.imageDescription}",
-                modifier = Modifier
-                    .padding(start = 30.dp, top = 10.dp, end = 30.dp, bottom = 30.dp))
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .scale(0.8f),
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.TopStart,
+                )
+                Text(text = "${selectedItem.title}, ${selectedItem.year}.",
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(start = 30.dp, top = 2.dp, end = 20.dp, bottom = 10.dp))
+                Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist."}",
+                    fontSize = 18.sp,
+                    modifier = Modifier
+                        .padding(start = 30.dp, top = 2.dp, end = 30.dp, bottom = 10.dp))
+                Text(text = selectedItem.imageDescription,
+                    modifier = Modifier
+                        .padding(start = 30.dp, top = 10.dp, end = 30.dp, bottom = 30.dp))
+            }
         }
+    } else {
+        Text(text = "Item not found", fontSize = 20.sp)
     }
 }

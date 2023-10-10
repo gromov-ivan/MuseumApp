@@ -25,11 +25,8 @@ import com.example.museumapp.composable.CameraView
 import com.example.museumapp.composable.CollectionDetailView
 import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
-import com.example.museumapp.composable.FavouriteDetailView
-import com.example.museumapp.composable.FavouriteItemCard
 import com.example.museumapp.composable.FavouritesView
 import com.example.museumapp.composable.HomePage
-import com.example.museumapp.room.FavouriteItem
 import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 
@@ -82,22 +79,6 @@ fun NavigationController(
         composable(NavigationItem.Favourite.route) {
             FavouritesView(favouriteViewModel)
         }
-
-        composable("favouriteDetailView/{itemId}") {backStackEntry ->
-            // Extract the item ID from the navigation arguments
-            val itemId = backStackEntry.arguments?.getString("itemId")
-            val favouriteData by favouriteViewModel.favouriteItems.observeAsState(emptyList())
-            // Retrieve the corresponding MuseumItem based on the item ID
-            val selectedItem = favouriteData.find { it.id == itemId }
-
-            if (selectedItem != null) {
-                // Pass the selected item to the FavouriteDetailView composable
-                FavouriteDetailView(selectedItem)
-            } else {
-                // Handle the case where the item is not found
-                Text(text = "Item not found", fontSize = 20.sp)
-            }
-        }
     }
 }
 
@@ -136,7 +117,7 @@ fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewMode
                         onClick = {
                             if(!isSelected){
 
-                                navController.graph?.startDestinationRoute?.let {
+                                navController.graph.startDestinationRoute?.let {
                                     navController.popBackStack(it,true)
                                 }
 
