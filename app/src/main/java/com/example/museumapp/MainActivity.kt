@@ -9,21 +9,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
-import androidx.navigation.compose.rememberNavController
 import com.example.museumapp.util.ShakeDetector
 import com.example.museumapp.ui.theme.MuseumAppTheme
 import com.example.museumapp.viewModel.MuseumViewModel
 import com.example.museumapp.composable.FeedbackBottomSheet
 import com.example.museumapp.navigation.Navigation
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.example.museumapp.viewModel.FavouriteViewModel
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MuseumViewModel>()
+    private val favouriteViewModel by viewModels<FavouriteViewModel>()
     private var mSensorManager: SensorManager? = null
     private var mShakeDetector: ShakeDetector? = null
 
@@ -34,26 +31,14 @@ class MainActivity : ComponentActivity() {
         mShakeDetector = ShakeDetector()
 
         setContent {
-            AppContent(viewModel)
-
-            val systemUiController = rememberSystemUiController()
-            val useDarkIcons = !isSystemInDarkTheme()
-
-            SideEffect {
-                systemUiController.setStatusBarColor(
-                    color = Color(0xFFFFFBFE),
-                    darkIcons = useDarkIcons,
-                )
-            }
+            AppContent(viewModel, favouriteViewModel)
         }
     }
 
     @Composable
-    fun AppContent(viewModel: MuseumViewModel) {
-        rememberNavController()
-
+    fun AppContent(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewModel) {
         MuseumAppTheme {
-            Navigation(viewModel)
+            Navigation(viewModel, favouriteViewModel)
 
             FeedbackBottomSheet(
                 shakeDetector = mShakeDetector,

@@ -16,7 +16,7 @@ sealed class NavigationItem (
     val unselectedIcon: ImageVector
 ) {
 
-    object Home: NavigationItem(route = "home", "Home", Icons.Filled.Home, Icons.Outlined.Home)
+    object Home: NavigationItem(route = "collectionsCard", "Home", Icons.Filled.Home, Icons.Outlined.Home)
     object Camera: NavigationItem(route = "camera", "Camera", Icons.Filled.CameraAlt, Icons.Outlined.CameraAlt)
     object Favourite: NavigationItem(route = "favourite", "Favourites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
 
