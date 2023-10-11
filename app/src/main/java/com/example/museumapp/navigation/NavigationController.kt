@@ -77,8 +77,16 @@ fun NavigationController(
         }
 
         composable(NavigationItem.Favourite.route) {
-            FavouritesView(favouriteViewModel)
+            FavouritesView(favouriteViewModel, navController)
         }
+
+//        composable(NavigationItem.FavouriteAnimated.route) {
+//            FavouriteAnimatedView(favouriteItems = favouriteItems)
+//        }
+//
+//        composable(NavigationItem.FavouriteList.route) {
+//            FavouriteListView(favouriteItems = favouriteItems)
+//        }
     }
 }
 

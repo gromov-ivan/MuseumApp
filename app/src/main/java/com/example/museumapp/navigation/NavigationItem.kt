@@ -8,6 +8,7 @@ import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
+import org.w3c.dom.NameList
 
 sealed class NavigationItem (
     val route: String,
@@ -19,5 +20,7 @@ sealed class NavigationItem (
     object Home: NavigationItem(route = "home", "Home", Icons.Filled.Home, Icons.Outlined.Home)
     object Camera: NavigationItem(route = "camera", "Camera", Icons.Filled.CameraAlt, Icons.Outlined.CameraAlt)
     object Favourite: NavigationItem(route = "favourite", "Favourites", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
+//    object FavouriteAnimated: NavigationItem(route = "favourite_animated", "Favourite Animated", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder )
+//    object FavouriteList: NavigationItem(route = "favourite_list", "Favourite List", Icons.Filled.Favorite, Icons.Outlined.FavoriteBorder)
 
 }
