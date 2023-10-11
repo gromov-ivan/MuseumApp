@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -26,7 +30,6 @@ import com.example.museumapp.composable.CollectionDetailView
 import com.example.museumapp.composable.CollectionList
 import com.example.museumapp.composable.CollectionsCard
 import com.example.museumapp.composable.FavouritesView
-import com.example.museumapp.composable.HomePage
 import com.example.museumapp.viewModel.FavouriteViewModel
 import com.example.museumapp.viewModel.MuseumViewModel
 
@@ -35,18 +38,20 @@ fun NavigationController(
     navController: NavHostController,
     viewModel: MuseumViewModel,
     favouriteViewModel: FavouriteViewModel
-    ) {
+) {
 
     val selectedCard = remember { mutableStateOf("") }
 
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
 
         composable(NavigationItem.Home.route) {
-            HomePage(navController)
+            CollectionsCard(navController, viewModel) { cardType ->
+                selectedCard.value = cardType
+            }
         }
 
         composable("collectionsCard") {
-            CollectionsCard(navController, viewModel){ cardType ->
+            CollectionsCard(navController, viewModel) { cardType ->
                 selectedCard.value = cardType
             }
         }
@@ -95,7 +100,18 @@ fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewMode
 
     Scaffold(
         bottomBar = {
-            BottomNavigation {
+            BottomNavigation (
+                backgroundColor = MaterialTheme.colorScheme.background,
+                modifier = Modifier.drawWithContent {
+                    drawContent()
+                    drawLine(
+                        color = Color(0xFFDFE2E7),
+                        start = Offset(0f, 0f),
+                        end = Offset(size.width, 0f),
+                        strokeWidth = 1.dp.toPx()
+                    )
+                }
+            ) {
 
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
@@ -111,17 +127,17 @@ fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewMode
                         icon = {
                             Icon(
                                 imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         },
                         onClick = {
-                            if(!isSelected){
-
+                            if (!isSelected) {
                                 navController.graph.startDestinationRoute?.let {
-                                    navController.popBackStack(it,true)
+                                    navController.popBackStack(it, true)
                                 }
 
-                                navController.navigate(item.route){
+                                navController.navigate(item.route) {
                                     launchSingleTop = true
                                 }
                             }

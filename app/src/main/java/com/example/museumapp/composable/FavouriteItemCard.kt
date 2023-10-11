@@ -17,8 +17,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -48,9 +52,10 @@ fun FavouriteItemCard(
     val isFavourite by remember { mutableStateOf(favouriteItem.isFavourite) }
 
     Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(7.dp)
+            .padding(0.dp, 6.dp)
             .clickable {
                 Log.d("MyApp", "Navigating to favouriteDetailView/${favouriteItem.id}")
                 // encode item.id to use the value in the navigation route
@@ -60,9 +65,8 @@ fun FavouriteItemCard(
     ) {
         Row(
             modifier = Modifier
-                .padding(5.dp)
+                .padding(8.dp)
         ) {
-            // Display the image using an Image composable
             val painter = rememberAsyncImagePainter(
                 ImageRequest.Builder(LocalContext.current)
                     .data(data = favouriteItem.images)
@@ -74,24 +78,30 @@ fun FavouriteItemCard(
                 painter = painter,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(100.dp)
-                    .clip(shape = RoundedCornerShape(2.dp)),
+                    .size(125.dp)
+                    .clip(shape = RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,
             )
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Column (
                 modifier = Modifier.weight(0.7f),
             ) {
                 Text(
-                    text = "${favouriteItem.title}.",
-                    fontSize = 17.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.SemiBold,
+                    text = favouriteItem.title,
+                    fontSize = 16.sp,
                     modifier = Modifier
-                        .widthIn(max = 200.dp)
+                        .widthIn(max = 200.dp),
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = favouriteItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist", fontSize = 14.sp)
+                Text(
+                    color = Color.Black,
+                    text = favouriteItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist",
+                    fontSize = 14.sp
+                )
             }
             Spacer(modifier = Modifier.width(16.dp))
             IconButton(
@@ -109,13 +119,14 @@ fun FavouriteItemCard(
                     }
                 },
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(30.dp),
             ) {
                 val icon = if (isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
                 Icon(
                     imageVector = icon,
                     contentDescription = "Favorite",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.tertiary
                 )
             }
         }

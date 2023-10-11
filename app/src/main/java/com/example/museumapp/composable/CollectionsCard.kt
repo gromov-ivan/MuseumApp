@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,8 @@ fun CollectionsCard(
                     .padding(0.dp, 0.dp, 0.dp, 64.dp),
                 textAlign = TextAlign.Left,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
             )
 
             ElevatedCard(
@@ -75,7 +77,8 @@ fun CollectionsCard(
                     Text(
                         text = "Tuusula Museum",
                         textAlign = TextAlign.Center,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
+                        color = Color.Black
                     )
                 }
             }
@@ -105,7 +108,8 @@ fun CollectionsCard(
                     Text(
                         text = "Ateneum Museum",
                         textAlign = TextAlign.Center,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
+                        color = Color.Black
                     )
                 }
             }
@@ -135,20 +139,11 @@ fun CollectionsCard(
                     Text(
                         text = "Photography Museum",
                         textAlign = TextAlign.Center,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
+                        color = Color.Black
                     )
                 }
             }
-
-            /*
-            Text(
-                text = "Tip: shake your phone whenever you want to select a different museum.",
-                modifier = Modifier
-                    .padding(16.dp),
-                textAlign = TextAlign.Left,
-                fontSize = 18.sp
-            )
-            */
         }
     }
 }

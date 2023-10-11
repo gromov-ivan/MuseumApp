@@ -14,9 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -40,7 +39,7 @@ fun CollectionDetailView(selectedItem: MuseumItem) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
             Image(
                 painter = painter,
@@ -48,21 +47,25 @@ fun CollectionDetailView(selectedItem: MuseumItem) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .scale(0.8f),
-                contentScale = ContentScale.Crop,
-                alignment = Alignment.TopStart,
+                    .padding(24.dp, 24.dp),
+                alignment = Alignment.Center,
             )
-            Text(text = "${selectedItem.title}, ${selectedItem.year}.",
+            Text(text = "${selectedItem.title}, ${selectedItem.year}",
                 fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 30.dp, top = 2.dp, end = 20.dp, bottom = 10.dp))
-            Text(text = "Artist: ${selectedItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist."}",
+                    .padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
+            )
+            Text(text = selectedItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown Artist",
                 fontSize = 18.sp,
+                fontWeight = FontWeight.Normal,
                 modifier = Modifier
-                    .padding(start = 30.dp, top = 2.dp, end = 30.dp, bottom = 10.dp))
-            Text(text = "${selectedItem.imageDescription}",
+                    .padding(start = 24.dp, top = 0.dp, end = 24.dp, bottom = 24.dp)
+            )
+            Text(text = selectedItem.imageDescription,
                 modifier = Modifier
-                    .padding(start = 30.dp, top = 10.dp, end = 30.dp, bottom = 30.dp))
+                    .padding(start = 24.dp, top = 0.dp, end = 24.dp, bottom = 24.dp)
+            )
         }
     }
 }
