@@ -36,24 +36,18 @@ import androidx.compose.ui.platform.LocalConfiguration
 import com.example.museumapp.R
 import androidx.compose.runtime.remember
 import android.content.res.Configuration
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.museumapp.room.FavouriteItem
 import com.example.museumapp.viewModel.FavouriteViewModel
 import kotlinx.coroutines.delay
 
 
-@SuppressLint("SuspiciousIndentation")
 @ExperimentalFoundationApi
 @Composable
-fun FavouriteAnimatedView(favouriteItems: List<FavouriteItem>) {
-    val pagerState = rememberPagerState(
-        pageCount = { favouriteItems.size},
-        initialPage = 0
-    )
+fun FavouriteAnimatedView(favouriteViewModel: FavouriteViewModel) {
 
-//    ) {
     val infiniteTransition = rememberInfiniteTransition()
     val angle by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -75,30 +69,24 @@ fun FavouriteAnimatedView(favouriteItems: List<FavouriteItem>) {
         (radius.value * sin(Math.toRadians(angle.toDouble()))).dp
     }
 
-//    val animals = listOf(
-//        R.drawable.flower,
-//        R.drawable.girl,
-//        R.drawable.sitgirl
-//    )
-
-//    val pagerState = rememberPagerState(
-//        pageCount = { animals.size },
-//        initialPage = 0
-//    )
-
+    val favouriteItems by favouriteViewModel.getAllFavourites().observeAsState(emptyList())
+    val pagerState = rememberPagerState(
+        pageCount = { favouriteItems.size },
+        initialPage = 0
+    )
     val scope = rememberCoroutineScope()
 
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-    LaunchedEffect(pagerState) {
-        while (true) {
-            val nextPage = (pagerState.currentPage + 1) % favouriteItems.size
-
-                pagerState.scrollToPage(nextPage)
-
-            // Adjust the delay duration as needed
-            delay(3000) // Scroll to the next item every 3 seconds
-        }
-    }
+//    LaunchedEffect(pagerState) {
+//        while (true) {
+//            val nextPage = (pagerState.currentPage + 1) % favouriteItems.size
+//
+//                pagerState.scrollToPage(nextPage)
+//
+//            // Adjust the delay duration as needed
+//            delay(3000) // Scroll to the next item every 3 seconds
+//        }
+//    }
 
     Box(
         modifier = Modifier
@@ -126,13 +114,13 @@ fun FavouriteAnimatedView(favouriteItems: List<FavouriteItem>) {
                 modifier = Modifier
                     .fillMaxSize()
             ) {page ->
-                val favouriteItem = favouriteItems[page]
+//                val favouriteItem = favouriteItems[page]
                 val painter = rememberAsyncImagePainter(
                     ImageRequest.Builder(LocalContext.current)
-                        .data(data = favouriteItem.images)
-                        .apply {
+                        .data(data = favouriteItems[page].images)
+                        .apply (block = fun ImageRequest.Builder.(){
                             crossfade(true)
-                        }
+                        })
                         .build()
                 )
                 Image(
