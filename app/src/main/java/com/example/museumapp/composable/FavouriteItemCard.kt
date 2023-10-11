@@ -85,7 +85,6 @@ fun FavouriteItemCard(
                 Text(text = favouriteItem.nonPresenterAuthorsName.trim().takeIf { it.isNotEmpty() } ?: "Unknown artist", fontSize = 14.sp)
             }
             Spacer(modifier = Modifier.width(16.dp))
-            // Add a favorite icon button
             IconButton(
                 onClick = {
                     val newFavouriteState = !isFavourite
