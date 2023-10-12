@@ -1,11 +1,14 @@
 package com.example.museumapp.composable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.museumapp.util.ShakeDetector
 import kotlinx.coroutines.launch
@@ -30,6 +33,11 @@ fun FeedbackBottomSheet(shakeDetector: ShakeDetector?, onSendFeedback: (String) 
         }
     }
 
+    val imeInsets = WindowInsets.ime
+    val density = LocalDensity.current
+
+    val keyboardHeightDp = with(density) { imeInsets.getBottom(this).toDp() }
+
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -40,7 +48,7 @@ fun FeedbackBottomSheet(shakeDetector: ShakeDetector?, onSendFeedback: (String) 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp, 16.dp, 16.dp, 125.dp + keyboardHeightDp)
             ) {
                 Text(text = "Feedback", style = MaterialTheme.typography.headlineMedium)
 
@@ -49,9 +57,9 @@ fun FeedbackBottomSheet(shakeDetector: ShakeDetector?, onSendFeedback: (String) 
                 TextField(
                     value = feedbackContent,
                     onValueChange = { feedbackContent = it },
-                    label = { Text("Your feedback") },
+                    label = { Text("Let us know about your experience!") },
                     modifier = Modifier.fillMaxWidth().height(200.dp),
-                    maxLines = 5
+                    maxLines = 5,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
