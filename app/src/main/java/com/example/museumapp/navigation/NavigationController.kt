@@ -3,10 +3,11 @@ package com.example.museumapp.navigation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,11 +16,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -50,18 +49,18 @@ fun NavigationController(
             }
         }
 
-        composable("collectionsCard") {
-            CollectionsCard(navController, viewModel) { cardType ->
-                selectedCard.value = cardType
-            }
-        }
-
         composable("collectionList") {
             val museumData by viewModel.museumData.observeAsState(emptyList())
-            CollectionList(museumData, viewModel, selectedCard.value, navController, favouriteViewModel)
+            CollectionList(
+                museumData,
+                viewModel,
+                selectedCard.value,
+                navController,
+                favouriteViewModel
+            )
         }
 
-        composable("collectionDetailView/{itemId}") {backStackEntry ->
+        composable("collectionDetailView/{itemId}") { backStackEntry ->
             // Extract the item ID from the navigation arguments
             val itemId = backStackEntry.arguments?.getString("itemId")
             val museumData by viewModel.museumData.observeAsState(emptyList())
@@ -88,10 +87,59 @@ fun NavigationController(
 }
 
 @Composable
+fun Material3BottomBar(
+    navController: NavHostController,
+    items: List<NavigationItem>
+) {
+    NavigationBar(
+        modifier = Modifier,
+        containerColor = MaterialTheme.colorScheme.background
+    ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+
+        items.forEach { item ->
+            val isSelected = when (item) {
+                NavigationItem.Home -> currentRoute == item.route || currentRoute == "collectionList"
+                else -> currentRoute == item.route
+            }
+
+            NavigationBarItem(
+                label = {
+                    Text(text = item.label)
+                },
+                icon = {
+                    Icon(
+                        imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                },
+                selected = isSelected,
+                onClick = {
+                    if (currentRoute != item.route) {
+                        navController.navigate(item.route) {
+                            launchSingleTop = true
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            restoreState = true
+                        }
+                    }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unselectedTextColor = MaterialTheme.colorScheme.onBackground,
+                    selectedTextColor = MaterialTheme.colorScheme.primary
+                )
+            )
+        }
+    }
+}
+
+@Composable
 fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewModel) {
-
     val navController = rememberNavController()
-
     val items = listOf(
         NavigationItem.Home,
         NavigationItem.Camera,
@@ -100,59 +148,18 @@ fun Navigation(viewModel: MuseumViewModel, favouriteViewModel: FavouriteViewMode
 
     Scaffold(
         bottomBar = {
-            BottomNavigation (
-                backgroundColor = MaterialTheme.colorScheme.background,
-                modifier = Modifier.drawWithContent {
-                    drawContent()
-                    drawLine(
-                        color = Color(0xFFDFE2E7),
-                        start = Offset(0f, 0f),
-                        end = Offset(size.width, 0f),
-                        strokeWidth = 1.dp.toPx()
-                    )
-                }
-            ) {
-
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-
-                items.forEach {item ->
-                    val isSelected = currentRoute == item.route
-                    BottomNavigationItem(selected = isSelected,
-                        label = {
-                            Text(
-                                text = item.label
-                            )
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        },
-                        onClick = {
-                            if (!isSelected) {
-                                navController.graph.startDestinationRoute?.let {
-                                    navController.popBackStack(it, true)
-                                }
-
-                                navController.navigate(item.route) {
-                                    launchSingleTop = true
-                                }
-                            }
-                        }
-                    )
-                }
-            }
+            Material3BottomBar(navController = navController, items = items)
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            NavigationController(navController = navController, viewModel = viewModel, favouriteViewModel = favouriteViewModel)
+            NavigationController(
+                navController = navController,
+                viewModel = viewModel,
+                favouriteViewModel = favouriteViewModel
+            )
         }
     }
 }

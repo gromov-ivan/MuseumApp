@@ -8,9 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Animation
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -38,16 +39,21 @@ fun FavouritesView(favouriteViewModel: FavouriteViewModel) {
         composable("Home") {
             Column(modifier = Modifier.fillMaxSize()) {
 
-                // Add the title at the top of the screen
                 Text(
-                    text = "Favourites",
+                    text = "Favorites",
                     modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
-                    fontSize = 24.sp,
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
+                Text(
+                    text = "Your curated collection, available anytime offline",
+                    modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
+                    fontSize = 16.sp,
+                )
+
 
                 Box(
-                    modifier = Modifier.weight(1f) // This ensures the Box takes up the remaining space
+                    modifier = Modifier.weight(1f)
                 ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
@@ -68,11 +74,12 @@ fun FavouritesView(favouriteViewModel: FavouriteViewModel) {
                         modifier = Modifier
                             .padding(16.dp)
                             .align(Alignment.BottomEnd),
+                        shape = RoundedCornerShape(16.dp),
                         backgroundColor = MaterialTheme.colorScheme.tertiary,
-                        elevation = FloatingActionButtonDefaults.elevation(2.dp, 2.dp)
+                        elevation = FloatingActionButtonDefaults.elevation(2.dp, 2.dp, 2.dp, 2.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Animation,
+                            imageVector = Icons.Outlined.Image,
                             contentDescription = "Navigate",
                             tint = MaterialTheme.colorScheme.onTertiary,
                         )

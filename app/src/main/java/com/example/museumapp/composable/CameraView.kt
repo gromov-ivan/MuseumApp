@@ -142,7 +142,7 @@ fun CameraView(){
                                     .selectable(
                                         selected = true,
                                         onClick = {
-                                            val uri = Uri.parse(code) // Replace with the actual URL
+                                            val uri = Uri.parse(code)
                                             val intent = Intent(Intent.ACTION_VIEW, uri)
                                             context.startActivity(intent)
                                         }
