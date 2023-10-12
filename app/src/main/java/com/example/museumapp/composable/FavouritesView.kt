@@ -80,7 +80,7 @@ fun FavouritesView(favouriteViewModel: FavouriteViewModel) {
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Image,
-                            contentDescription = "Navigate",
+                            contentDescription = "Navigate to Favorite Animated View",
                             tint = MaterialTheme.colorScheme.onTertiary,
                         )
                     }
