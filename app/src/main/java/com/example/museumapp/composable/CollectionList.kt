@@ -76,148 +76,147 @@ fun CollectionList(
     }
 
     Column {
-        // Check for internet connectivity here
+        // Content based on the selected tab
+        when (selectedCard) {
+            "Tuusula Museum" -> {
+                when (selectedTabIndex) {
+                    0 -> {
+                        Text(
+                            text = "Tuusula Museum",
+                            modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Drawings collection",
+                            modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
+                            fontSize = 16.sp
+                        )
+                        viewModel.fetchTuusulaDrawings()
+                    }
+
+                    1 -> {
+                        Text(
+                            text = "Tuusula Museum",
+                            modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Pictures collection",
+                            modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
+                            fontSize = 16.sp
+                        )
+                        viewModel.fetchTuusulaPictures()
+                    }
+                }
+            }
+
+            "Ateneum Museum" -> {
+                when (selectedTabIndex) {
+                    0 -> {
+                        Text(
+                            text = "Ateneum Museum",
+                            modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Graphics collection",
+                            modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
+                            fontSize = 16.sp
+                        )
+                        viewModel.fetchAteneumGraphics()
+                    }
+
+                    1 -> {
+                        Text(
+                            text = "Ateneum Museum",
+                            modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Sculpture collection",
+                            modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
+                            fontSize = 16.sp
+                        )
+                        viewModel.fetchAteneumSculptures()
+                    }
+                }
+            }
+
+            "Photography Museum" -> {
+                when (selectedTabIndex) {
+                    0 -> {
+                        Text(
+                            text = "Photography Museum",
+                            modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Cities collection",
+                            modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
+                            fontSize = 16.sp
+                        )
+                        viewModel.fetchCitiesPhotograhs()
+                    }
+
+                    1 -> {
+                        Text(
+                            text = "Photography Museum",
+                            modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Agriculture collection",
+                            modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
+                            fontSize = 16.sp
+                        )
+                        viewModel.fetchAgriculturePhotographs()
+                    }
+                }
+            }
+        }
+
+        // Tab Row
+        TabRow(
+            selectedTabIndex = selectedTabIndex,
+            containerColor = Color.Transparent,
+            modifier = Modifier.padding(12.dp, 0.dp),
+            divider = {}
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = {
+                        selectedTabIndex = index
+                    },
+                    text = { Text(text = title) }
+                )
+            }
+        }
+
+
+        // Observe changes in the list of favorite items from the ViewModel
+        val favouriteItems by favouriteViewModel.favouriteItems.observeAsState(emptyList())
+
+        // Initialize a map to store the isFavourite state for each item
+        val isFavouriteMap = remember { mutableStateMapOf<String, Boolean>() }
+
+        // Update the isFavouriteMap whenever favouriteItems changes
+        LaunchedEffect(favouriteItems) {
+            favouriteItems.forEach { favouriteItem ->
+                isFavouriteMap[favouriteItem.id] = favouriteItem.isFavourite
+            }
+        }
+
         if (!isConnected) {
             NoInternetPlaceholder()
         } else {
-            // Content based on the selected tab
-            when (selectedCard) {
-                "Tuusula Museum" -> {
-                    when (selectedTabIndex) {
-                        0 -> {
-                            Text(
-                                text = "Tuusula Museum",
-                                modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Drawings collection",
-                                modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
-                                fontSize = 16.sp
-                            )
-                            viewModel.fetchTuusulaDrawings()
-                        }
-
-                        1 -> {
-                            Text(
-                                text = "Tuusula Museum",
-                                modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Pictures collection",
-                                modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
-                                fontSize = 16.sp
-                            )
-                            viewModel.fetchTuusulaPictures()
-                        }
-                    }
-                }
-
-                "Ateneum Museum" -> {
-                    when (selectedTabIndex) {
-                        0 -> {
-                            Text(
-                                text = "Ateneum Museum",
-                                modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Graphics collection",
-                                modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
-                                fontSize = 16.sp
-                            )
-                            viewModel.fetchAteneumGraphics()
-                        }
-
-                        1 -> {
-                            Text(
-                                text = "Ateneum Museum",
-                                modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Sculpture collection",
-                                modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
-                                fontSize = 16.sp
-                            )
-                            viewModel.fetchAteneumSculptures()
-                        }
-                    }
-                }
-
-                "Photography Museum" -> {
-                    when (selectedTabIndex) {
-                        0 -> {
-                            Text(
-                                text = "Photography Museum",
-                                modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Cities collection",
-                                modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
-                                fontSize = 16.sp
-                            )
-                            viewModel.fetchCitiesPhotograhs()
-                        }
-
-                        1 -> {
-                            Text(
-                                text = "Photography Museum",
-                                modifier = Modifier.padding(20.dp, 24.dp, 20.dp, 2.dp),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Agriculture collection",
-                                modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp),
-                                fontSize = 16.sp
-                            )
-                            viewModel.fetchAgriculturePhotographs()
-                        }
-                    }
-                }
-            }
-
-            // Tab Row
-            TabRow(
-                selectedTabIndex = selectedTabIndex,
-                containerColor = Color.Transparent,
-                modifier = Modifier.padding(12.dp, 0.dp),
-                divider={}
-            ) {
-                tabs.forEachIndexed { index, title ->
-                    Tab(
-                        selected = selectedTabIndex == index,
-                        onClick = {
-                            selectedTabIndex = index
-                        },
-                        text = { Text(text = title) }
-                    )
-                }
-            }
-
-            // Observe changes in the list of favorite items from the ViewModel
-            val favouriteItems by favouriteViewModel.favouriteItems.observeAsState(emptyList())
-
-            // Initialize a map to store the isFavourite state for each item
-            val isFavouriteMap = remember { mutableStateMapOf<String, Boolean>() }
-
-            // Update the isFavouriteMap whenever favouriteItems changes
-            LaunchedEffect(favouriteItems) {
-                favouriteItems.forEach { favouriteItem ->
-                    isFavouriteMap[favouriteItem.id] = favouriteItem.isFavourite
-                }
-            }
-
             Spacer(modifier = Modifier.height(6.dp))
-
             LazyColumn {
                 items(museumItems) { item ->
 
