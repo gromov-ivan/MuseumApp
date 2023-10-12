@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -130,12 +131,13 @@ fun CameraView(){
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
+                                .padding(16.dp, 0.dp, 16.dp, 64.dp)
                         ) {
                             Text(
                                 text = code,
                                 fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
+                                textDecoration = TextDecoration.Underline,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(16.dp)
