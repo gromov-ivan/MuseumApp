@@ -100,7 +100,7 @@ fun Material3BottomBar(
 
         items.forEach { item ->
             val isSelected = when (item) {
-                NavigationItem.Home -> currentRoute == item.route || currentRoute == "collectionList"
+                NavigationItem.Home -> currentRoute == item.route || currentRoute == "collectionList" || currentRoute == "collectionDetailView/{itemId}"
                 else -> currentRoute == item.route
             }
 
