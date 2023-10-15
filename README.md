@@ -12,17 +12,17 @@ Explore and interact with various collections from renowned Finnish museums with
 ## Screenshots
 
 <p float="left">
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/420868bc-d42b-41aa-b184-0b0212392e71" width="200" />
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/0cd339a8-f6cb-47e6-8720-fe56f831f8f1" width="200" /> 
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/9b7e7913-3396-4807-aa6d-41d1fee95231" width="200" /> 
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/4eedbef3-45ae-4ac9-800e-2aa635726c94" width="200" />
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/3ad125ca-3985-43ab-8936-26a08583a9fc" width="200" />
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/08a5181c-0fc3-49e7-a813-b615a60afba8" width="200" /> 
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/7213b07a-76d3-4052-88af-268e299a7bb4" width="200" /> 
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/4c63d950-523b-49b4-98eb-9ff0d9de7618" width="200" />
 </p>
 
 <p float="left">
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/ae53c5ce-2dc1-4a00-afeb-b7477197e1a0" width="200" />
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/21cdcff1-2a25-45fa-8c88-7f5479812ed4" width="200" /> 
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/66f40ec8-dffa-4226-bd03-2bccfe0a318e" width="200" />
-  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/da1bbe6e-cae9-4fa4-89a2-58517eb7da5f" width="200" />
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/aa6c95c9-b96e-4a8b-a74c-244b982ad135" width="200" />
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/34fcb805-9e5b-448f-ac4a-c67f8fd5803c" width="200" /> 
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/4c249104-ba2e-4a55-8c10-791a5dbd8bf8" width="200" />
+  <img src="https://github.com/gromov-ivan/MuseumApp/assets/122451258/7e5f1507-c532-47ce-857c-0afbf92c77db" width="200" />
 </p>
 
 ## Getting Started
