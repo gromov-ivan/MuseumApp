@@ -59,3 +59,6 @@ Note: For a full list of all dependencies, please refer to the `build.gradle.kt`
 
 ## Feedback & Contribution
 Feel free to report any issues or provide feedback. We appreciate your contribution to making the Museum App better!
+
+## License
+This project is licensed under the MIT License.
